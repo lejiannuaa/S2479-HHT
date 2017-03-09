@@ -1,0 +1,216 @@
+<HTML><HEAD>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="imagetoolbar" content="no">
+<link href="resources/css/jquery-ui-themes.css" type="text/css" rel="stylesheet">
+<link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet">
+<link href="退调拨-采购-调整_files/axurerp_pagespecificstyles.css" type="text/css" rel="stylesheet">
+<!--[if IE 6]>
+<link href="退调拨-采购-调整_files/axurerp_pagespecificstyles_ie6.css" type="text/css" rel="stylesheet">
+<![endif]-->
+<SCRIPT src="resources/scripts/jquery-1.4.2.min.js"></SCRIPT>
+<SCRIPT src="resources/scripts/jquery-ui-1.8.10.custom.min.js"></SCRIPT>
+<SCRIPT src="resources/scripts/axurerp_beforepagescript.js"></SCRIPT>
+<SCRIPT src="resources/scripts/messagecenter.js"></SCRIPT>
+</HEAD>
+<BODY>
+<DIV class="main_container">
+
+<DIV id=u0_container class="u0_container">
+<DIV id="u0_img" class="u0_original"></DIV>
+<DIV id=u1 class="u1" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<INPUT type="image" id=u0 src="resources/images/transparent.gif" class="u0"    >
+
+<DIV id=u2_container class="u2_container">
+<DIV id="u2_img" class="u2_original"></DIV>
+<DIV id=u3 class="u3" >
+<DIV id=u3_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u2 src="resources/images/transparent.gif" class="u2"    >
+
+<DIV id=u4_container class="u4_container">
+<DIV id="u4_img" class="u4_original"></DIV>
+<DIV id=u5 class="u5" >
+<DIV id=u5_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#A1792B;">返 回</span></p></DIV></DIV>
+</DIV>
+<INPUT type="image" id=u4 src="resources/images/transparent.gif" class="u4"    >
+
+<DIV id=u6_container class="u6_container">
+<DIV id="u6_img" class="u6_original"></DIV>
+<DIV id=u7 class="u7" >
+<DIV id=u7_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u6 src="resources/images/transparent.gif" class="u6"    >
+
+<DIV id=u8 style="visibility:hidden; position:absolute; left:10px; top:120px; width:241px; height:81px;; overflow:hidden; ">
+<DIV id=pd0u8 style="position:absolute; left:0px; top:0px; width:1px; height:1px; ;">
+<DIV id=u9 class="u9;">
+
+<DIV id=u9_table class="u9_table"></DIV>
+
+</DIV>
+
+<DIV id=u9container style="position:absolute; left:0px; top:0px; width:245px; height:85px; overflow:visible">
+
+<DIV id=u10_container class="u10_container">
+<DIV id=u11 class="u11" >
+<DIV id=u11_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">SKU</span></p></DIV></DIV>
+</DIV>
+<IMG id=u10 src="resources/images/transparent.gif" class="u10"    >
+
+<DIV id=u12_container class="u12_container">
+<DIV id=u13 class="u13" >
+<DIV id=u13_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">箱号</span></p></DIV></DIV>
+</DIV>
+<IMG id=u12 src="resources/images/transparent.gif" class="u12"    >
+
+<DIV id=u14_container class="u14_container">
+<DIV id=u15 class="u15" >
+<DIV id=u15_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">实退数量</span></p></DIV></DIV>
+</DIV>
+<IMG id=u14 src="resources/images/transparent.gif" class="u14"    >
+
+<DIV id=u16_container class="u16_container">
+<DIV id=u17 class="u17" >
+<DIV id=u17_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">32944</span></p></DIV></DIV>
+</DIV>
+<IMG id=u16 src="resources/images/transparent.gif" class="u16"    >
+
+<DIV id=u18_container class="u18_container">
+<DIV id=u19 class="u19" >
+<DIV id=u19_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">0001</span></p></DIV></DIV>
+</DIV>
+<IMG id=u18 src="resources/images/transparent.gif" class="u18"    >
+
+<DIV id=u20_container class="u20_container">
+<DIV id=u21 class="u21" >
+<DIV id=u21_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">0</span></p></DIV></DIV>
+</DIV>
+<IMG id=u20 src="resources/images/transparent.gif" class="u20"    >
+
+<DIV id=u22_container class="u22_container">
+<DIV id=u23 class="u23" >
+<DIV id=u23_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">32944</span></p></DIV></DIV>
+</DIV>
+<IMG id=u22 src="resources/images/transparent.gif" class="u22"    >
+
+<DIV id=u24_container class="u24_container">
+<DIV id=u25 class="u25" >
+<DIV id=u25_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">0002</span></p></DIV></DIV>
+</DIV>
+<IMG id=u24 src="resources/images/transparent.gif" class="u24"    >
+
+<DIV id=u26_container class="u26_container">
+<DIV id=u27 class="u27" >
+<DIV id=u27_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">3</span></p></DIV></DIV>
+</DIV>
+<IMG id=u26 src="resources/images/transparent.gif" class="u26"    >
+
+<DIV id=u28_container class="u28_container">
+<DIV id=u29 class="u29" >
+<DIV id=u29_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">32944</span></p></DIV></DIV>
+</DIV>
+<IMG id=u28 src="resources/images/transparent.gif" class="u28"    >
+
+<DIV id=u30_container class="u30_container">
+<DIV id=u31 class="u31" >
+<DIV id=u31_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">0003</span></p></DIV></DIV>
+</DIV>
+<IMG id=u30 src="resources/images/transparent.gif" class="u30"    >
+
+<DIV id=u32_container class="u32_container">
+<DIV id=u33 class="u33" >
+<DIV id=u33_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">1</span></p></DIV></DIV>
+</DIV>
+<IMG id=u32 src="resources/images/transparent.gif" class="u32"    >
+
+</DIV>
+</DIV>
+</DIV>
+<DIV id=u34 class="u34" >
+<DIV id=u34_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">RTV单号：</span></p></DIV></DIV>
+<INPUT id=u35 type=text value="RTV0001" class="u35"     >
+
+<DIV id=u36 class="u36" >
+<DIV id=u36_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">退货</span></p><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">数量：</span></p></DIV></DIV>
+<INPUT id=u37 type=text value="4" class="u37"     >
+
+<DIV id=u38 class="u38" >
+<DIV id=u38_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">调入店：</span></p></DIV></DIV>
+<INPUT id=u39 type=text value="13101" class="u39"     >
+
+<DIV id=u40 class="u40" >
+<DIV id=u40_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">实退</span></p><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">数量：</span></p></DIV></DIV>
+<INPUT id=u41 type=text value="7" class="u41"     >
+
+<DIV id=u42_container class="u42_container">
+<DIV id="u42_img" class="u42_original"></DIV>
+<DIV id=u43 class="u43" >
+<DIV id=u43_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#A1792B;">上一页</span></p></DIV></DIV>
+</DIV>
+<IMG id=u42 src="resources/images/transparent.gif" class="u42"    >
+
+<DIV id=u44_container class="u44_container">
+<DIV id="u44_img" class="u44_original"></DIV>
+<DIV id=u45 class="u45" >
+<DIV id=u45_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#A1792B;">下一页</span></p></DIV></DIV>
+</DIV>
+<IMG id=u44 src="resources/images/transparent.gif" class="u44"    >
+
+<DIV id=u46 class="u46" >
+<DIV id=u46_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">1/1</span></p></DIV></DIV>
+<DIV id=u47_container class="u47_container">
+<DIV id="u47_img" class="u47_original"></DIV>
+<DIV id=u48 class="u48" >
+<DIV id=u48_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#A1792B;">确 认</span></p></DIV></DIV>
+</DIV>
+<INPUT type="image" id=u47 src="resources/images/transparent.gif" class="u47"    >
+
+<DIV id=u49 class="u49" >
+<DIV id=u49_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">1、选中行、且长按时弹出上下文菜单</span></p><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">2、实退数量选中可编辑</span></p></DIV></DIV>
+<DIV id=u50 style="visibility:hidden; position:absolute; left:160px; top:160px; width:67px; height:27px;; overflow:hidden; ">
+<DIV id=pd0u50 style="position:absolute; left:0px; top:0px; width:1px; height:1px; ;">
+<DIV id=u51_menu class="u51_menu"></DIV>
+
+<IMG id=u51 src="resources/images/transparent.gif" style="position:absolute; left:0px; top:0px; width:66px; height:26px">
+
+<DIV id=u51container style="position:absolute; left:0px; top:0px; width:66px; height:26px;; overflow:visible">
+
+<DIV id=u52 class="u52;">
+
+<DIV id=u52_table class="u52_table"></DIV>
+
+</DIV>
+
+<DIV id=u52container style="position:absolute; left:3px; top:3px; width:65px; height:25px; overflow:visible">
+
+<DIV id=u53_container class="u53_container">
+<DIV id=u54 class="u54" >
+<DIV id=u54_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">列 印</span></p></DIV></DIV>
+</DIV>
+<INPUT type="image" id=u53 src="resources/images/transparent.gif" class="u53"    >
+
+</DIV>
+</DIV>
+</DIV>
+</DIV></DIV>
+<DIV class=preload>
+<img src="退调拨-采购-调整_files/u0_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u2_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u4_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u6_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u9_table.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u10_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u12_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u14_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u16_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u18_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u20_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u42_original.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u51_menu.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u52_table.png" width="1" height="1"/>
+<img src="退调拨-采购-调整_files/u53_original.png" width="1" height="1"/></DIV>
+</BODY>
+<SCRIPT src="resources/scripts/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="退调拨-采购-调整_files/axurerp_pagespecificscript.js" charset="utf-8"></SCRIPT>

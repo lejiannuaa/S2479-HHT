@@ -1,0 +1,158 @@
+<HTML><HEAD>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="imagetoolbar" content="no">
+<link href="resources/css/jquery-ui-themes.css" type="text/css" rel="stylesheet">
+<link href="resources/css/axure_rp_page.css" type="text/css" rel="stylesheet">
+<link href="短收原因维护_files/axurerp_pagespecificstyles.css" type="text/css" rel="stylesheet">
+<!--[if IE 6]>
+<link href="短收原因维护_files/axurerp_pagespecificstyles_ie6.css" type="text/css" rel="stylesheet">
+<![endif]-->
+<SCRIPT src="resources/scripts/jquery-1.4.2.min.js"></SCRIPT>
+<SCRIPT src="resources/scripts/jquery-ui-1.8.10.custom.min.js"></SCRIPT>
+<SCRIPT src="resources/scripts/axurerp_beforepagescript.js"></SCRIPT>
+<SCRIPT src="resources/scripts/messagecenter.js"></SCRIPT>
+</HEAD>
+<BODY>
+<DIV class="main_container">
+
+<DIV id=u0_container class="u0_container">
+<DIV id="u0_img" class="u0_original"></DIV>
+<DIV id=u1 class="u1" >
+<DIV id=u1_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u0 src="resources/images/transparent.gif" class="u0"    >
+
+<DIV id=u2_container class="u2_container">
+<DIV id="u2_img" class="u2_original"></DIV>
+<DIV id=u3 class="u3" >
+<DIV id=u3_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u2 src="resources/images/transparent.gif" class="u2"    >
+
+<DIV id=u4_container class="u4_container">
+<DIV id="u4_img" class="u4_original"></DIV>
+<DIV id=u5 class="u5" >
+<DIV id=u5_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#A1792B;">返 回</span></p></DIV></DIV>
+</DIV>
+<INPUT type="image" id=u4 src="resources/images/transparent.gif" class="u4"    >
+
+<DIV id=u6_container class="u6_container">
+<DIV id="u6_img" class="u6_original"></DIV>
+<DIV id=u7 class="u7" >
+<DIV id=u7_rtf>&nbsp;</DIV></DIV>
+</DIV>
+<IMG id=u6 src="resources/images/transparent.gif" class="u6"    >
+
+<DIV id=u8 style="visibility:hidden; position:absolute; left:10px; top:138px; width:241px; height:101px;; overflow:hidden; ">
+<DIV id=pd0u8 style="position:absolute; left:0px; top:0px; width:1px; height:1px; ;">
+<DIV id=u9 class="u9;">
+
+<DIV id=u9_table class="u9_table"></DIV>
+
+</DIV>
+
+<DIV id=u9container style="position:absolute; left:0px; top:0px; width:245px; height:105px; overflow:visible">
+
+<DIV id=u10_container class="u10_container">
+<DIV id=u11 class="u11" >
+<DIV id=u11_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">申诉退货原因</span></p></DIV></DIV>
+</DIV>
+<IMG id=u10 src="resources/images/transparent.gif" class="u10"    >
+
+<DIV id=u12_container class="u12_container">
+<DIV id=u13 class="u13" >
+<DIV id=u13_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">申诉数量</span></p></DIV></DIV>
+</DIV>
+<IMG id=u12 src="resources/images/transparent.gif" class="u12"    >
+
+<DIV id=u14_container class="u14_container">
+<DIV id=u15 class="u15" >
+<DIV id=u15_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">1.瑕疵</span></p></DIV></DIV>
+</DIV>
+<IMG id=u14 src="resources/images/transparent.gif" class="u14"    >
+
+<DIV id=u16_container class="u16_container">
+<DIV id=u17 class="u17" >
+<DIV id=u17_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">1</span></p></DIV></DIV>
+</DIV>
+<IMG id=u16 src="resources/images/transparent.gif" class="u16"    >
+
+<DIV id=u18_container class="u18_container">
+<DIV id=u19 class="u19" >
+<DIV id=u19_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">2.物流流失</span></p></DIV></DIV>
+</DIV>
+<IMG id=u18 src="resources/images/transparent.gif" class="u18"    >
+
+<DIV id=u20_container class="u20_container">
+<DIV id=u21 class="u21" >
+<DIV id=u21_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">0</span></p></DIV></DIV>
+</DIV>
+<IMG id=u20 src="resources/images/transparent.gif" class="u20"    >
+
+<DIV id=u22_container class="u22_container">
+<DIV id=u23 class="u23" >
+<DIV id=u23_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">3.短少</span></p></DIV></DIV>
+</DIV>
+<IMG id=u22 src="resources/images/transparent.gif" class="u22"    >
+
+<DIV id=u24_container class="u24_container">
+<DIV id=u25 class="u25" >
+<DIV id=u25_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">0</span></p></DIV></DIV>
+</DIV>
+<IMG id=u24 src="resources/images/transparent.gif" class="u24"    >
+
+<DIV id=u26_container class="u26_container">
+<DIV id=u27 class="u27" >
+<DIV id=u27_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">4.破损</span></p></DIV></DIV>
+</DIV>
+<IMG id=u26 src="resources/images/transparent.gif" class="u26"    >
+
+<DIV id=u28_container class="u28_container">
+<DIV id=u29 class="u29" >
+<DIV id=u29_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">1</span></p></DIV></DIV>
+</DIV>
+<IMG id=u28 src="resources/images/transparent.gif" class="u28"    >
+
+</DIV>
+</DIV>
+</DIV>
+<DIV id=u30 class="u30" >
+<DIV id=u30_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">箱/单号：</span></p></DIV></DIV>
+<INPUT id=u31 type=text value="0003" class="u31"     >
+
+<DIV id=u32 class="u32" >
+<DIV id=u32_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">SKU：</span></p></DIV></DIV>
+<INPUT id=u33 type=text value="34875" class="u33"     >
+
+<DIV id=u34 class="u34" >
+<DIV id=u34_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">申诉</span></p><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">总数量：</span></p></DIV></DIV>
+<INPUT id=u35 type=text value="3" class="u35"     >
+
+<DIV id=u36 class="u36" >
+<DIV id=u36_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">已填写：</span></p></DIV></DIV>
+<INPUT id=u37 type=text value="2" class="u37"     >
+
+<DIV id=u38 class="u38" >
+<DIV id=u38_rtf><p style="text-align:left;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">品名：</span></p></DIV></DIV>
+<INPUT id=u39 type=text value="杯子" class="u39"     >
+
+<DIV id=u40_container class="u40_container">
+<DIV id="u40_img" class="u40_original"></DIV>
+<DIV id=u41 class="u41" >
+<DIV id=u41_rtf><p style="text-align:center;"><span style="font-family:宋体;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#A1792B;">确 认</span></p></DIV></DIV>
+</DIV>
+<INPUT type="image" id=u40 src="resources/images/transparent.gif" class="u40"    >
+</DIV>
+<DIV class=preload>
+<img src="短收原因维护_files/u0_original.png" width="1" height="1"/>
+<img src="短收原因维护_files/u2_original.png" width="1" height="1"/>
+<img src="短收原因维护_files/u4_original.png" width="1" height="1"/>
+<img src="短收原因维护_files/u6_original.png" width="1" height="1"/>
+<img src="短收原因维护_files/u9_table.png" width="1" height="1"/>
+<img src="短收原因维护_files/u10_original.png" width="1" height="1"/>
+<img src="短收原因维护_files/u12_original.png" width="1" height="1"/>
+<img src="短收原因维护_files/u14_original.png" width="1" height="1"/>
+<img src="短收原因维护_files/u16_original.png" width="1" height="1"/></DIV>
+</BODY>
+<SCRIPT src="resources/scripts/axurerp_pagescript.js"></SCRIPT>
+<SCRIPT src="短收原因维护_files/axurerp_pagespecificscript.js" charset="utf-8"></SCRIPT>

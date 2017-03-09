@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!-- -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+	    <property name="dataSource"> 
+	      <ref local="storeDataSource" /> 
+	    </property> 
+	    <property name="nestedTransactionAllowed" value="true" />
+ 	 </bean> 
+  
+	  <!-- 配置事务特性，配置add,delete,update开始的方法，事务传播行为为required
+	  <tx:advice id="txAdvice" transaction-manager="transactionManager"> 
+	    <tx:attributes> 
+	      <tx:method name="add*" propagation="REQUIRED" /> 
+	      <tx:method name="save*" propagation="REQUIRED" /> 
+	      <tx:method name="delete*" propagation="REQUIRED" /> 
+	      <tx:method name="update*" propagation="REQUIRED" />
+	      <tx:method name="merge*" propagation="REQUIRED" /> 
+	      <tx:method name="offline*" propagation="REQUIRED" /> 
+	      <tx:method name="publish*" propagation="REQUIRED" /> 
+	      <tx:method name="execution*" propagation="REQUIRED" /> 
+	      <tx:method name="*" read-only="true" /> 
+	    </tx:attributes> 
+	  </tx:advice>  -->
+	  
+	  <!-- 配置哪些类的方法进行事务管理，当前为service包下的方法，类中所有方法需要，还需要参考tx:advice的设置
+	  <aop:config proxy-target-class="true"> 
+	    <aop:pointcut id="addManagerMethod" expression="execution (* 
+	    com.hola.tarbs.service.*.*(..))" /> 
+	    <aop:advisor advice-ref="txAdvice" pointcut-ref="addManagerMethod"/> 
+	  </aop:config>-->
+ 
+	<!-- for hhtServer -->
+	<bean id="hhtServerJdbcTemplate"
+		class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="hhtserverDataSource"></property>
+	</bean>
+	<bean id='hhtserverDataSource'
+		class='com.mchange.v2.c3p0.ComboPooledDataSource'
+		destroy-method='close'>
+		<!-- 指定连接数据库的驱动 -->
+		<property name='driverClass' value='${hhtServer.jdbc.driverClassName}' />
+		<!-- 指定连接数据库的URL -->
+		<property name='jdbcUrl' value='${hhtServer.jdbc.url}' />
+		<!-- 指定连接数据库的用户名 -->
+		<property name='user' value='${hhtServer.jdbc.username}' />
+		<!-- 指定连接数据库的密码 -->
+		<property name='password' value='${hhtServer.jdbc.password}' />
+		<!-- 指定连接数据库连接池的最大连接数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 指定连接数据库连接池的最小连接数 -->
+		<property name="minPoolSize" value="1" />
+		<!-- 指定连接数据库连接池的初始化连接数 -->
+		<property name="initialPoolSize" value="1" />
+		<!--每30秒检查所有连接池中的空闲连接。Default: 0 -->
+		<property name="idleConnectionTestPeriod" value="30" />
+		<!--最大空闲时间,30秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<property name="maxIdleTime" value="30" />
+		<!--c3p0是异步操作的，缓慢的JDBC操作通过帮助进程完成。扩展这些操作可以有效的提升性能通过多线程实现多个操作同时被执行。Default: 3-->
+		<property name="numHelperThreads" value="5" />
+		<!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+		<property name="acquireRetryAttempts" value="30" />
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<property name='acquireIncrement' value='10' />
+	</bean>
+	<!-- for store -->
+	<bean id="storeJdbcTemplate"
+		class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="storeDataSource"></property>
+	</bean>
+	<bean id='storeDataSource' class='com.mchange.v2.c3p0.ComboPooledDataSource' destroy-method='close'>
+		<!-- 指定连接数据库的驱动 -->
+		<property name='driverClass' value='${store.jdbc.driverClassName}' />
+		<!-- 指定连接数据库的URL -->
+		<property name='jdbcUrl' value='${store.jdbc.url}' />
+		<!-- 指定连接数据库的用户名 -->
+		<property name='user' value='${store.jdbc.username}' />
+		<!-- 指定连接数据库的密码 -->
+		<property name='password' value='${store.jdbc.password}' />
+		<!-- 指定连接数据库连接池的最大连接数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 指定连接数据库连接池的最小连接数 -->
+		<property name="minPoolSize" value="1" />
+		<!-- 指定连接数据库连接池的初始化连接数 -->
+		<property name="initialPoolSize" value="1" />
+		<!--每30秒检查所有连接池中的空闲连接。Default: 0 -->
+		<property name="idleConnectionTestPeriod" value="30" />
+		<!--最大空闲时间,30秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<property name="maxIdleTime" value="30" />
+		<!--c3p0是异步操作的，缓慢的JDBC操作通过帮助进程完成。扩展这些操作可以有效的提升性能通过多线程实现多个操作同时被执行。Default: 3-->
+		<property name="numHelperThreads" value="5" />
+		<!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+		<property name="acquireRetryAttempts" value="30" />
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<property name='acquireIncrement' value='10' />
+	</bean>
+	
+	<bean name="baseDao" class="com.hola.common.dao.BaseDao" scope="prototype">
+		<property name="storeJt" ref="storeJdbcTemplate" />
+		<property name="hhtserverJt" ref="hhtServerJdbcTemplate" />
+	</bean>
+	<bean name="baseService" class="com.hola.common.service.BaseService" scope="prototype">
+	</bean>
+	
+	<import resource="classpath:dao.xml" />
+	<import resource="classpath:tarjda.xml" />
+	<import resource="classpath:tarbs.xml" />
+</beans>

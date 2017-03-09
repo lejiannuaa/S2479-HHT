@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+    <appender name="info" class="org.apache.log4j.DailyRollingFileAppender">  
+		<param name="File" value="d:/log/HolaBridgeServer/info/HolaBridgeServer_info.log" />  
+		<param name="append" value="true"/>
+		<param name="datePattern" value="'.'yyyy-MM-dd'.log'"/>
+		<layout class="org.apache.log4j.PatternLayout">  
+  			<param name="ConversionPattern" value="%d{yyy-MM-dd HH:mm:ss} [%-5p] %c {%F:%L} - %m%n" />  
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+  			<param name="LevelMin" value="INFO" />    
+  			<param name="LevelMax" value="INFO" />    
+		</filter>    
+	</appender>
+	
+	<appender name="error" class="org.apache.log4j.DailyRollingFileAppender">  
+		<param name="File" value="d:/log/HolaBridgeServer/error/error.log" />  
+		<param name="append" value="true"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+		<layout class="org.apache.log4j.PatternLayout">  
+  			<param name="ConversionPattern" value="[%-5p][%d{yyyy-MM-dd HH:mm:ss}][%l]:%m%n" />  
+		</layout>  
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+  			<param name="LevelMin" value="ERROR" />    
+  			<param name="LevelMax" value="ERROR" />    
+		</filter>  
+	</appender>  
+
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-5p][%d{yyyy-MM-dd HH:mm:ss}][%l]:%m%n" />
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+        	<param name="LevelMin" value="INFO" />    
+  			<param name="LevelMax" value="ERROR"/>
+  		</filter>
+    </appender>
+    
+	 <appender name="JDBC" class="org.apache.log4j.jdbc.JDBCAppender">
+     	<param name="URL" value="jdbc:mysql://10.130.1.43:3309/hhtserver?useUnicode=true&amp;characterEncoding=utf-8"/>
+     	<param name="user" value="root"/>
+     	<param name="password" value="root"/>
+     	<param name="driver" value="com.mysql.jdbc.Driver"/>
+     	<layout class="org.apache.log4j.PatternLayout">
+       		<param name="ConversionPattern" value="INSERT INTO hhtserver.hhtlog (user_no,sto_no,operation_desc, logdate) VALUES ('%X{userNo}','%X{stoNo}','%m','%d{yyyy-MM-dd HH:mm:ss}')"/>
+     	</layout>
+     	<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+  			<param name="LevelMin" value="INFO" />    
+  			<param name="LevelMax" value="INFO" />
+  		</filter>    
+ 	</appender>
+ 	
+ 	<appender name="sysMonitor" class="org.apache.log4j.RollingFileAppender">
+     	<param name="File" value="d:/log/HolaBridgeServer/info/HolaBridgeServer_userContainerInfo.log" />  
+		<param name="append" value="true"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<layout class="org.apache.log4j.PatternLayout">  
+  			<param name="ConversionPattern" value="%d{yyy-MM-dd HH:mm:ss} [%-5p] %c {%F:%L} - %m%n" />  
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+  			<param name="LevelMin" value="INFO" />    
+  			<param name="LevelMax" value="INFO" />    
+		</filter>    
+ 	</appender>
+ 	
+ 	<appender name="receiveLog" class="org.apache.log4j.DailyRollingFileAppender">
+ 		<param name="File" value="d:/log/HolaBridgeServer/info/receive.log" />  
+		<param name="append" value="true"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+		<layout class="org.apache.log4j.PatternLayout">  
+  			<param name="ConversionPattern" value="[%-5p][%d{yyyy-MM-dd HH:mm:ss}][%l]:%m%n" />  
+		</layout>  
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">    
+  			<param name="LevelMin" value="INFO" />    
+  			<param name="LevelMax" value="INFO" />    
+		</filter>  
+ 	</appender>
+ 	
+ 	<logger name="com.hola.bs.service.hht" additivity="false">     
+        <appender-ref ref="JDBC" />
+        <appender-ref ref="error" />
+    </logger>  
+    
+    <logger name="sysMonitorLogger" additivity="false">     
+        <appender-ref ref="sysMonitor" />     
+    </logger> 
+    
+    <logger name="sysReceiveLog" additivity="false">
+    	<appender-ref ref="receiveLog"/>  
+    </logger>
+	<root>  
+		<appender-ref ref="info" />  
+		<appender-ref ref="error" />
+		<appender-ref ref="stdout" />
+	</root>  
+</log4j:configuration>

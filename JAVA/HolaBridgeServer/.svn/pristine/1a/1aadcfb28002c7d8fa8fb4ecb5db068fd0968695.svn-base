@@ -1,0 +1,968 @@
+body {
+    margin: 0px;
+}
+
+div {
+    background-repeat: no-repeat;
+}
+
+.raw_image {
+    width: 100%;
+    height: 100%;
+}
+
+.preload {
+    display: none;
+}
+div.main_container {
+}
+
+.form_sketch {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.u0_original {
+    background-image: url('../退调拨-采购-调整_files/u0_original.png');
+}
+
+.u0_container {
+    position:absolute;
+    left:10px;
+    top:10px;
+    width:240px;
+    height:320px;
+}
+
+#u0_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:246px;
+    height:326px;
+}
+
+.u1 {
+    position:absolute;
+    left:2px;
+    top:152px;
+    width:236px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u0 {
+    position:absolute;
+    left:10px;
+    top:10px;
+    width:240px;
+    height:320px
+}
+
+.u2_original {
+    background-image: url('../退调拨-采购-调整_files/u2_original.png');
+}
+
+.u2_container {
+    position:absolute;
+    left:10px;
+    top:106px;
+    width:240px;
+    height:2px;
+}
+
+#u2_img {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:240px;
+    height:2px;
+}
+
+.u3 {
+    position:absolute;
+    left:2px;
+    top:-7px;
+    width:236px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u2 {
+    position:absolute;
+    left:10px;
+    top:106px;
+    width:240px;
+    height:2px
+}
+
+.u4_original {
+    background-image: url('../退调拨-采购-调整_files/u4_original.png');
+}
+
+.u4_container {
+    position:absolute;
+    left:12px;
+    top:307px;
+    width:78px;
+    height:21px;
+}
+
+#u4_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:84px;
+    height:27px;
+}
+
+.u5 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:74px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u4 {
+    position:absolute;
+    left:12px;
+    top:307px;
+    width:78px;
+    height:21px
+}
+
+.u6_original {
+    background-image: url('../退调拨-采购-调整_files/u6_original.png');
+}
+
+.u6_container {
+    position:absolute;
+    left:10px;
+    top:304px;
+    width:240px;
+    height:2px;
+}
+
+#u6_img {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:240px;
+    height:2px;
+}
+
+.u7 {
+    position:absolute;
+    left:2px;
+    top:-7px;
+    width:236px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u6 {
+    position:absolute;
+    left:10px;
+    top:304px;
+    width:240px;
+    height:2px
+}
+
+#u9 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:245px;
+    height:85px
+}
+
+.u9_table {
+    background-image: url('../退调拨-采购-调整_files/u9_table.png');
+}
+
+.u9_table {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:249px;
+    height:89px;
+}
+
+.u10_original {
+    background-image: url('../退调拨-采购-调整_files/u10_original.png');
+}
+
+.u10_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:95px;
+    height:20px;
+}
+
+.u11 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:91px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u10 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:95px;
+    height:20px
+}
+
+.u12_original {
+    background-image: url('../退调拨-采购-调整_files/u12_original.png');
+}
+
+.u12_container {
+    position:absolute;
+    left:95px;
+    top:0px;
+    width:83px;
+    height:20px;
+}
+
+.u13 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:79px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u12 {
+    position:absolute;
+    left:95px;
+    top:0px;
+    width:83px;
+    height:20px
+}
+
+.u14_original {
+    background-image: url('../退调拨-采购-调整_files/u14_original.png');
+}
+
+.u14_container {
+    position:absolute;
+    left:178px;
+    top:0px;
+    width:62px;
+    height:20px;
+}
+
+.u15 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:58px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u14 {
+    position:absolute;
+    left:178px;
+    top:0px;
+    width:62px;
+    height:20px
+}
+
+.u16_original {
+    background-image: url('../退调拨-采购-调整_files/u16_original.png');
+}
+
+.u16_container {
+    position:absolute;
+    left:0px;
+    top:20px;
+    width:95px;
+    height:20px;
+}
+
+.u17 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:91px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u16 {
+    position:absolute;
+    left:0px;
+    top:20px;
+    width:95px;
+    height:20px
+}
+
+.u18_original {
+    background-image: url('../退调拨-采购-调整_files/u18_original.png');
+}
+
+.u18_container {
+    position:absolute;
+    left:95px;
+    top:20px;
+    width:83px;
+    height:20px;
+}
+
+.u19 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:79px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u18 {
+    position:absolute;
+    left:95px;
+    top:20px;
+    width:83px;
+    height:20px
+}
+
+.u20_original {
+    background-image: url('../退调拨-采购-调整_files/u20_original.png');
+}
+
+.u20_container {
+    position:absolute;
+    left:178px;
+    top:20px;
+    width:62px;
+    height:20px;
+}
+
+.u21 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:58px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u20 {
+    position:absolute;
+    left:178px;
+    top:20px;
+    width:62px;
+    height:20px
+}
+
+.u22_original {
+    background-image: url('../退调拨-采购-调整_files/u16_original.png');
+}
+
+.u22_container {
+    position:absolute;
+    left:0px;
+    top:40px;
+    width:95px;
+    height:20px;
+}
+
+.u23 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:91px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u22 {
+    position:absolute;
+    left:0px;
+    top:40px;
+    width:95px;
+    height:20px
+}
+
+.u24_original {
+    background-image: url('../退调拨-采购-调整_files/u18_original.png');
+}
+
+.u24_container {
+    position:absolute;
+    left:95px;
+    top:40px;
+    width:83px;
+    height:20px;
+}
+
+.u25 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:79px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u24 {
+    position:absolute;
+    left:95px;
+    top:40px;
+    width:83px;
+    height:20px
+}
+
+.u26_original {
+    background-image: url('../退调拨-采购-调整_files/u20_original.png');
+}
+
+.u26_container {
+    position:absolute;
+    left:178px;
+    top:40px;
+    width:62px;
+    height:20px;
+}
+
+.u27 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:58px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u26 {
+    position:absolute;
+    left:178px;
+    top:40px;
+    width:62px;
+    height:20px
+}
+
+.u28_original {
+    background-image: url('../退调拨-采购-调整_files/u16_original.png');
+}
+
+.u28_container {
+    position:absolute;
+    left:0px;
+    top:60px;
+    width:95px;
+    height:20px;
+}
+
+.u29 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:91px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u28 {
+    position:absolute;
+    left:0px;
+    top:60px;
+    width:95px;
+    height:20px
+}
+
+.u30_original {
+    background-image: url('../退调拨-采购-调整_files/u18_original.png');
+}
+
+.u30_container {
+    position:absolute;
+    left:95px;
+    top:60px;
+    width:83px;
+    height:20px;
+}
+
+.u31 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:79px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u30 {
+    position:absolute;
+    left:95px;
+    top:60px;
+    width:83px;
+    height:20px
+}
+
+.u32_original {
+    background-image: url('../退调拨-采购-调整_files/u20_original.png');
+}
+
+.u32_container {
+    position:absolute;
+    left:178px;
+    top:60px;
+    width:62px;
+    height:20px;
+}
+
+.u33 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:58px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u32 {
+    position:absolute;
+    left:178px;
+    top:60px;
+    width:62px;
+    height:20px
+}
+
+.u34 {
+    position:absolute;
+    left:12px;
+    top:28px;
+    width:150px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u35 {
+    position:absolute;
+    left:60px;
+    top:23px;
+    width:70px;
+    height:25px;
+    ;
+    background-color:#EDEDED;;
+    text-align: left;;
+    font-family:'宋体';
+    font-size: 12px;
+    color:#000000;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    
+}
+
+.u36 {
+    position:absolute;
+    left:15px;
+    top:59px;
+    width:150px;
+    height:28px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u37 {
+    position:absolute;
+    left:60px;
+    top:60px;
+    width:70px;
+    height:25px;
+    ;
+    background-color:#EDEDED;;
+    text-align: left;;
+    font-family:'宋体';
+    font-size: 12px;
+    color:#000000;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    
+}
+
+.u38 {
+    position:absolute;
+    left:133px;
+    top:28px;
+    width:150px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u39 {
+    position:absolute;
+    left:174px;
+    top:23px;
+    width:70px;
+    height:25px;
+    ;
+    background-color:#EDEDED;;
+    text-align: left;;
+    font-family:'宋体';
+    font-size: 12px;
+    color:#000000;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    
+}
+
+.u40 {
+    position:absolute;
+    left:133px;
+    top:59px;
+    width:150px;
+    height:28px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u41 {
+    position:absolute;
+    left:174px;
+    top:60px;
+    width:70px;
+    height:25px;
+    ;
+    ;
+    text-align: left;;
+    font-family:'宋体';
+    font-size: 12px;
+    color:#FF0000;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    
+}
+
+.u42_original {
+    background-image: url('../退调拨-采购-调整_files/u42_original.png');
+}
+
+.u42_container {
+    position:absolute;
+    left:40px;
+    top:274px;
+    width:61px;
+    height:21px;
+}
+
+#u42_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:67px;
+    height:27px;
+}
+
+.u43 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:57px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u42 {
+    position:absolute;
+    left:40px;
+    top:274px;
+    width:61px;
+    height:21px
+}
+
+.u44_original {
+    background-image: url('../退调拨-采购-调整_files/u42_original.png');
+}
+
+.u44_container {
+    position:absolute;
+    left:161px;
+    top:274px;
+    width:61px;
+    height:21px;
+}
+
+#u44_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:67px;
+    height:27px;
+}
+
+.u45 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:57px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u44 {
+    position:absolute;
+    left:161px;
+    top:274px;
+    width:61px;
+    height:21px
+}
+
+.u46 {
+    position:absolute;
+    left:111px;
+    top:277px;
+    width:40px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u47_original {
+    background-image: url('../退调拨-采购-调整_files/u4_original.png');
+}
+
+.u47_container {
+    position:absolute;
+    left:170px;
+    top:307px;
+    width:78px;
+    height:21px;
+}
+
+#u47_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:84px;
+    height:27px;
+}
+
+.u48 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:74px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u47 {
+    position:absolute;
+    left:170px;
+    top:307px;
+    width:78px;
+    height:21px
+}
+
+.u49 {
+    position:absolute;
+    left:270px;
+    top:10px;
+    width:230px;
+    height:28px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u51_menu {
+    background-image: url('../退调拨-采购-调整_files/u51_menu.png');
+}
+
+.u51_menu {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:75px;
+    height:35px;
+}
+
+#u52 {
+    position:absolute;
+    left:3px;
+    top:3px;
+    width:65px;
+    height:25px
+}
+
+.u52_table {
+    background-image: url('../退调拨-采购-调整_files/u52_table.png');
+}
+
+.u52_table {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:69px;
+    height:29px;
+}
+
+.u53_original {
+    background-image: url('../退调拨-采购-调整_files/u53_original.png');
+}
+
+.u53_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:60px;
+    height:20px;
+}
+
+.u54 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:14px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u53 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:60px;
+    height:20px
+}
+

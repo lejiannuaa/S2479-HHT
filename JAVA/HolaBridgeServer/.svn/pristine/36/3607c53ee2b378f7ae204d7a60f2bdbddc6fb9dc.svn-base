@@ -1,0 +1,23 @@
+#IBM MQ Setting
+#for test
+username=truser
+password=Testrite123
+receiveTimeout=2000
+transportType=1
+queueManager=QM_HLC
+hostName=10.130.1.119
+port=1421
+CCSID=950
+
+
+
+#for production
+#username=truser
+#password=Trgmq002
+#receiveTimeout=2000
+#transportType=1
+#hostName=10.254.143.160
+#CCSID=1208
+#QUEUEMANAGER=QM_HLC
+#PORT=1421
+##################################################################

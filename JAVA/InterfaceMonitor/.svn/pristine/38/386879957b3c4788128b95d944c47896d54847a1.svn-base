@@ -1,0 +1,52 @@
+package service;
+
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import model.IntfInfo;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
+public class IntfMonitor {
+	
+	private static Log log = LogFactory.getLog(IntfMonitor.class);
+	
+    public static void main(String[] args) {  
+        Runnable runnable = new RunThread();
+        
+        ScheduledExecutorService service = Executors  
+                .newSingleThreadScheduledExecutor();
+        service.scheduleAtFixedRate(runnable, 10, 10, TimeUnit.SECONDS);  
+    }  
+    
+
+    public static class RunThread implements Runnable{
+    	
+    	public RunThread(){
+    		
+    	}
+    	
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			//System.out.println("Hello !!");
+			
+			log.info("查询需要监控的interface");
+			
+			List<IntfInfo> intfInfoList = MonitorService.receiveDBForAllSystem();
+			
+			for(IntfInfo intfInfo : intfInfoList)
+			{
+				log.info("监控interface: " + intfInfo.getIntfName());
+				MonitorService.monitortime(intfInfo);
+			}
+    		
+		}
+    	
+    }
+    
+}

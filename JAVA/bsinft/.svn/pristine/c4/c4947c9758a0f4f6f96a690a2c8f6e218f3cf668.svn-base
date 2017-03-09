@@ -1,0 +1,33 @@
+log4j.rootLogger=info,stdout,error,D
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target = System.out
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=[%-5p][%d{yyyy-MM-dd HH:mm:ss}]-[ %t:%r ][%l]:%m%n
+
+### \u6748\u64B3\u56AD\u9352\u7248\u68E9\u8E47\u6941\u6783\u6D60\uFFFD ###
+log4j.appender.D = org.apache.log4j.DailyRollingFileAppender
+
+#log4j.appender.file.D=stdout
+log4j.appender.D.Threshold=DEBUG
+log4j.appender.D.Append=true
+log4j.appender.D.DatePattern='_'yyyy-MM-dd'.log'
+
+log4j.appender.D.File =D:/MW/log/mqToBs/log.log
+#log4j.appender.D.Append = true
+#log4j.appender.D.Threshold = DEBUG
+log4j.appender.D.MaxFileSize=10000KB
+log4j.appender.D.MaxBackupIndex=10
+#log4j.appender.D.DatePattern = '.'yyyy-MM-dd 
+log4j.appender.D.layout = org.apache.log4j.PatternLayout
+log4j.appender.D.layout.ConversionPattern = %-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r ][%l] - [ %p ]  %m%n
+ 
+log4j.logger.error=error
+log4j.appender.error=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.error.layout=org.apache.log4j.PatternLayout
+log4j.appender.error.layout.ConversionPattern=[%-5p][%d{yyyy-MM-dd HH:mm:ss}]-[ %t:%r ][%l]:%m%n[ %t:%r ]
+log4j.appender.error.datePattern='.'yyyy-MM-dd
+log4j.appender.error.Threshold = ERROR 
+log4j.appender.error.append=true
+log4j.appender.error.File=D:/MW/log/mqToBs/log_err.log
+

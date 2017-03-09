@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-lazy-init="false">
+
+	<import resource="application-holaDataConversion.xml" />
+	<import resource="classpath:jmsConfig/jmsContext13104.xml" />
+	<!-- JDBC Properties -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- <property name="location" value="/WEB-INF/hibernate/jdbc.properties" 
+			/> -->
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:jms.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dsSqlServer" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${driver.sqlserver}</value>
+		</property>
+		<property name="url">
+			<value>${sqlserver.url}</value>
+		</property>
+		<property name="username">
+			<value>${sqlserver.user}</value>
+		</property>
+		<property name="password">
+			<value>${sqlserver.password}</value>
+		</property>
+	</bean>
+
+
+
+
+	<bean id="dsOracle" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${driver.oracle}</value>
+		</property>
+		<property name="url">
+			<value>${oracle.url}</value>
+		</property>
+		<property name="username">
+			<value>${oracle.user}</value>
+		</property>
+		<property name="password">
+			<value>${oracle.password}</value>
+		</property>
+	</bean>
+
+	<!-- 定义数据源 -->
+	<bean id="dsMysql" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${driver.mysql}</value>
+		</property>
+		<property name="url">
+			<value>${mysql.url}</value>
+		</property>
+		<property name="username">
+			<value>${mysql.user}</value>
+		</property>
+		<property name="password">
+			<value>${mysql.password}</value>
+		</property>
+		<!-- 连接池启动时创建的初始化连接数量（不设定即为0） -->
+		<property name="initialSize">
+			<value>${mysql.connectionPool.initialSize}</value>
+		</property>
+		<!-- 连接池中可同时连接的最大的连接数（默认值为8) -->
+		<property name="maxActive">
+			<value>${mysql.connectionPool.maxActive}</value>
+		</property>
+		<!-- 连接池中最小的空闲的连接数，低于这个数量会被创建新的连接 -->
+		<property name="minIdle">
+			<value>${mysql.connectionPool.minIdle}</value>
+		</property>
+		<!-- 连接池中最大的空闲的连接数，超过的空闲连接将被释放 -->
+		<property name="maxIdle">
+			<value>${mysql.connectionPool.maxIdle}</value>
+		</property>
+		<!-- 最大等待时间，当没有可用连接时，连接池等待连接释放的最大时间，超过该时间限制会抛出异常 -->
+		<property name="maxWait">
+			<value>${mysql.connectionPool.maxWait}</value>
+		</property>
+		<property name="minEvictableIdleTimeMillis">
+			<value>${mysql.connectionPool.minEvictableIdleTimeMillis}</value>
+		</property>
+		<property name="timeBetweenEvictionRunsMillis">
+			<value>${mysql.connectionPool.timeBetweenEvictionRunsMillis}</value>
+		</property>
+		<property name="numTestsPerEvictionRun">
+			<value>${mysql.connectionPool.numTestsPerEvictionRun}</value>
+		</property>
+		<!-- 
+		<property name="testWhileIdle">
+			<value>${mysql.connectionPool.testWhileIdle}</value>
+		</property>
+		-->
+
+		<!-- removeAbandoned属性说明 -->
+		<!-- 超过removeAbandonedTimeout时间后，是否进 行没用连接（废弃）的回收（默认为false) -->
+		<!-- 举例当maxActive=20, 活动连接为18,空闲连接为1时可以触发"removeAbandoned".但是活动连接只有在没有被使用的时间超 
+			过"removeAbandonedTimeout(这里默认为300秒)"时才被回收 -->
+		<!-- 遇到数据库死锁。以前遇到过后端存储过程做了锁表操作，导致前台集群中连接池全都被block住，后续的业务处理因为拿不到链接所有都处理失败了。 -->
+		<property name="removeAbandoned">
+			<value>${mysql.connectionPool.removeAbandoned}</value>
+		</property>
+		<property name="removeAbandonedTimeout">
+			<value>${mysql.connectionPool.removeAbandonedTimeout}</value>
+		</property>
+	</bean>
+
+	<context:component-scan base-package="com.hola.bs" />
+
+	<bean id="command" class="com.hola.bs.core.Command">
+
+		<!-- 核心容器，每个logic对象对应一个查询方法，通过key来关联这个对象。因此每增加一个查询方法，就需要相应的在这里增加一个对象。 -->
+		<!-- 需要注意，这里的key是socket通讯双方约定的值，当手持式设备通过socket连接到服务器后，发送的报文头应该就是在这里被约定的key，通过这个key来决定实际需要调用的业务逻辑对象。 -->
+		<property name="unitMap">
+			<map>
+				<entry key="login">
+					<ref bean="login" />
+				</entry>
+				<entry key="logout">
+					<ref bean="logout" />
+				</entry>
+				<entry key="001_01">
+					<ref bean="hht_001_01" />
+				</entry>
+				<entry key="001_02">
+					<ref bean="hht_001_02" />
+				</entry>
+				<entry key="001_03">
+					<ref bean="hht_001_03" />
+				</entry>
+				<entry key="001_04">
+					<ref bean="hht_001_04" />
+				</entry>
+				<entry key="001_05">
+					<ref bean="hht_001_05" />
+				</entry>
+				<entry key="001_06">
+					<ref bean="hht_001_06" />
+				</entry>
+				<entry key="002_01">
+					<ref bean="hht_002_01" />
+				</entry>
+				<entry key="002_02">
+					<ref bean="hht_002_02" />
+				</entry>
+				<entry key="002_05">
+					<ref bean="hht_002_05" />
+				</entry>
+				<entry key="003_01">
+					<ref bean="hht_003_01" />
+				</entry>
+				<entry key="004_01">
+					<ref bean="hht_004_01" />
+				</entry>
+				<entry key="004_02">
+					<ref bean="hht_004_02" />
+				</entry>
+				<entry key="004_03">
+					<ref bean="hht_004_03" />
+				</entry>
+				<entry key="004_04">
+					<ref bean="hht_004_04" />
+				</entry>
+				<entry key="005_01">
+					<ref bean="hht_005_01" />
+				</entry>
+				<entry key="005_02">
+					<ref bean="hht_005_02" />
+				</entry>
+				<entry key="005_04">
+					<ref bean="hht_005_04" />
+				</entry>
+				<entry key="005_05">
+					<ref bean="hht_005_05" />
+				</entry>
+				<entry key="006_01">
+					<ref bean="hht_006_01" />
+				</entry>
+				<entry key="101_01">
+					<ref bean="hht_101_01" />
+				</entry>
+				<entry key="101_02">
+					<ref bean="hht_101_02" />
+				</entry>
+				<entry key="101_03">
+					<ref bean="hht_101_03" />
+				</entry>
+				<entry key="101_04">
+					<ref bean="hht_101_04" />
+				</entry>
+				<entry key="103_01">
+					<ref bean="hht_103_01" />
+				</entry>
+				<entry key="103_02">
+					<ref bean="hht_103_02" />
+				</entry>
+				<entry key="103_03">
+					<ref bean="hht_103_03" />
+				</entry>
+				<entry key="104_03">
+					<ref bean="hht_104_03" />
+				</entry>
+				<entry key="105_01">
+					<ref bean="hht_105_01" />
+				</entry>
+				<entry key="105_02">
+					<ref bean="hht_105_02" />
+				</entry>
+				<entry key="105_04">
+					<ref bean="hht_105_04" />
+				</entry>
+				<entry key="106_01">
+					<ref bean="hht_106_01" />
+				</entry>
+				<entry key="106_02">
+					<ref bean="hht_106_02" />
+				</entry>
+				<entry key="107_01">
+					<ref bean="hht_107_01" />
+				</entry>
+				<entry key="107_02">
+					<ref bean="hht_107_02" />
+				</entry>
+				<entry key="102_01">
+					<ref bean="hht_102_01" />
+				</entry>
+				<entry key="104_01">
+					<ref bean="hht_104_01" />
+				</entry>
+				<entry key="104_02">
+					<ref bean="hht_104_02" />
+				</entry>
+				<entry key="104_05">
+					<ref bean="hht_104_05" />
+				</entry>
+				<entry key="201_01">
+					<ref bean="hht_201_01" />
+				</entry>
+				<entry key="202_01">
+					<ref bean="hht_202_01" />
+				</entry>
+				<entry key="202_02">
+					<ref bean="hht_202_02" />
+				</entry>
+				<entry key="202_03">
+					<ref bean="hht_202_03" />
+				</entry>
+				<entry key="202_04">
+					<ref bean="hht_202_04" />
+				</entry>
+				<entry key="203_01">
+					<ref bean="hht_203_01" />
+				</entry>
+				<entry key="203_02">
+					<ref bean="hht_203_02" />
+				</entry>
+				<entry key="204_01">
+					<ref bean="hht_204_01" />
+				</entry>
+				<entry key="204_02">
+					<ref bean="hht_204_02" />
+				</entry>
+				<entry key="205_01">
+					<ref bean="hht_205_01" />
+				</entry>
+				<entry key="207_01">
+					<ref bean="hht_207_01" />
+				</entry>
+
+				<entry key="005_03">
+					<ref bean="hht_005_03" />
+				</entry>
+				<entry key="002_03">
+					<ref bean="hht_002_03" />
+				</entry>
+				<entry key="002_04">
+					<ref bean="hht_002_04" />
+				</entry>
+				<entry key="104_04">
+					<ref bean="hht_104_04" />
+				</entry>
+				<entry key="101_05">
+					<ref bean="hht_101_05" />
+				</entry>
+				<entry key="105_03">
+					<ref bean="hht_105_03" />
+				</entry>
+				<entry key="106_03">
+					<ref bean="hht_106_03" />
+				</entry>
+				<entry key="300_01">
+					<ref bean="hht_300_01" />
+				</entry>
+				<!-- I'm the split line -->
+				<!-- some common biz interface -->
+				<!-- 请求获取商品名称信息 -->
+				<entry key="S00_01">
+					<ref bean="hht_S00_01" />
+				</entry>
+				<entry key="A00_01">
+					<ref bean="hht_A00_01" />
+				</entry>
+				<!-- 初盘业务 -->
+				<entry key="500_01">
+					<ref bean="hht_500_01" />
+				</entry>
+				<entry key="500_02">
+					<ref bean="hht_500_02" />
+				</entry>
+				<entry key="500_03">
+					<ref bean="hht_500_03" />
+				</entry>
+				<entry key="501_01">
+					<ref bean="hht_501_01" />
+				</entry>
+
+				<!-- 复盘业务 -->
+				<entry key="600_01">
+					<ref bean="hht_600_01" />
+				</entry>
+				<entry key="600_02">
+					<ref bean="hht_600_02" />
+				</entry>
+				<entry key="600_03">
+					<ref bean="hht_600_03" />
+				</entry>
+				<entry key="601_01">
+					<ref bean="hht_601_01" />
+				</entry>
+				<entry key="601_02">
+					<ref bean="hht_601_02" />
+				</entry>
+				<entry key="602_01">
+					<ref bean="hht_602_01" />
+				</entry>
+
+				<!-- 抽盘业务 -->
+				<entry key="700_01">
+					<ref bean="hht_700_01" />
+				</entry>
+				<entry key="700_02">
+					<ref bean="hht_700_02" />
+				</entry>
+				<entry key="701_01">
+					<ref bean="hht_701_01" />
+				</entry>
+				<entry key="701_02">
+					<ref bean="hht_701_02" />
+				</entry>
+
+				<!-- HHT通讯检测 -->
+				<entry key="800_01">
+					<ref bean="hht_800_01" />
+				</entry>
+
+				<!-- 营业课部分 -->
+				<entry key="1011_01">
+					<ref bean="hht_1011_01" />
+				</entry>
+				<entry key="1012_01">
+					<ref bean="hht_1012_01" />
+				</entry>
+				<entry key="1013_01">
+					<ref bean="hht_1013_01" />
+				</entry>
+				<entry key="1021_01">
+					<ref bean="hht_1021_01" />
+				</entry>
+				<entry key="1022_01">
+					<ref bean="hht_1022_01" />
+				</entry>
+				<entry key="1023_01">
+					<ref bean="hht_1023_01" />
+				</entry>
+				<entry key="1024_01">
+					<ref bean="hht_1024_01" />
+				</entry>
+				<entry key="1031_01">
+					<ref bean="hht_1031_01" />
+				</entry>
+				<entry key="1032_01">
+					<ref bean="hht_1032_01" />
+				</entry>
+				<entry key="1033_01">
+					<ref bean="hht_1033_01" />
+				</entry>
+				<entry key="1033_02">
+					<ref bean="hht_1033_02" />
+				</entry>
+				<entry key="1034_01">
+					<ref bean="hht_1034_01" />
+				</entry>
+				<entry key="1034_02">
+					<ref bean="hht_1034_02" />
+				</entry>
+				<entry key="1035_01">
+					<ref bean="hht_1035_01" />
+				</entry>
+				<entry key="1035_02">
+					<ref bean="hht_1035_02" />
+				</entry>
+				<entry key="1036_01">
+					<ref bean="hht_1036_01" />
+				</entry>
+				<entry key="1041_01">
+					<ref bean="hht_1041_01" />
+				</entry>
+				<entry key="1041_02">
+					<ref bean="hht_1041_02" />
+				</entry>
+				<entry key="1042_02">
+					<ref bean="hht_1042_02" />
+				</entry>
+				<entry key="1043_01">
+					<ref bean="hht_1043_01" />
+				</entry>
+				<entry key="1043_02">
+					<ref bean="hht_1043_02" />
+				</entry>
+				<entry key="1044_01">
+					<ref bean="hht_1044_01" />
+				</entry>
+				<entry key="1044_02">
+					<ref bean="hht_1044_02" />
+				</entry>
+				<entry key="1045_01">
+					<ref bean="hht_1045_01" />
+				</entry>
+				<entry key="1045_02">
+					<ref bean="hht_1045_02" />
+				</entry>
+				<entry key="1045_03">
+					<ref bean="hht_1045_03" />
+				</entry>
+				<entry key="1045_04">
+					<ref bean="hht_1045_04" />
+				</entry>
+				<entry key="1045_05">
+					<ref bean="hht_1045_05" />
+				</entry>
+				<entry key="1046_01">
+					<ref bean="hht_1046_01" />
+				</entry>
+				<entry key="1046_02">
+					<ref bean="hht_1046_02" />
+				</entry>
+				<entry key="1046_03">
+					<ref bean="hht_1046_03" />
+				</entry>
+				<entry key="1046_04">
+					<ref bean="hht_1046_04" />
+				</entry>
+				<entry key="1046_05">
+					<ref bean="hht_1046_05" />
+				</entry>
+				<entry key="1047_01">
+					<ref bean="hht_1047_01" />
+				</entry>
+				<entry key="1047_02">
+					<ref bean="hht_1047_02" />
+				</entry>
+				<entry key="1047_03">
+					<ref bean="hht_1047_03" />
+				</entry>
+				<entry key="1047_04">
+					<ref bean="hht_1047_04" />
+				</entry>
+				<entry key="1047_05">
+					<ref bean="hht_1047_05" />
+				</entry>
+				<entry key="108_01">
+					<ref bean="hht_108_01" />
+				</entry>
+				<entry key="109_01">
+					<ref bean="hht_109_01" />
+				</entry>
+				<entry key="109_02">
+					<ref bean="hht_109_02" />
+				</entry>
+				<entry key="110_01">
+					<ref bean="hht_110_01" />
+				</entry>
+				<entry key="110_02">
+					<ref bean="hht_110_02" />
+				</entry>
+				<entry key="111_01">
+					<ref bean="hht_111_01" />
+				</entry>
+				<entry key="111_02">
+					<ref bean="hht_111_02" />
+				</entry>
+				<entry key="112_01">
+					<ref bean="hht_112_01" />
+				</entry>
+				<entry key="112_02">
+					<ref bean="hht_112_02" />
+				</entry>
+				<entry key="113_01">
+					<ref bean="hht_113_01" />
+				</entry>
+				<entry key="113_02">
+					<ref bean="hht_113_02" />
+				</entry>
+				<entry key="108_02">
+					<ref bean="hht_108_02" />
+				</entry>			
+                <entry key="501_02">
+					<ref bean="hht_501_02" />
+				</entry>
+				<entry key="501_03">
+					<ref bean="hht_501_03" />
+				</entry>
+				<entry key="501_04">
+					<ref bean="hht_501_04" />
+				</entry>
+			</map>
+		</property>
+
+		<property name="us" ref="userContainer" />
+		<property name="uv" ref="useVerify" />
+		<property name="rv" ref="requestValidation" />
+	</bean>
+
+	<bean id="server" class="com.hola.bs.socket.TCPServer" />
+
+	<bean id="Xserver" class="com.hola.bs.socket.XBridgeServer" />
+	<bean id="handler" class="com.hola.bs.socket.XServerHandler" />
+
+	<bean id="protocol" class="com.hola.bs.socket.TCPProtocolImpl">
+		<property name="bufferSize" value="2048" />
+	</bean>
+
+	<bean id="chginstDao" class="com.hola.bs.service.ChginstDao" />
+
+	<bean id="jdbcTemplateUtil" class="com.hola.bs.service.JdbcTemplateImpl" />
+	<bean id="jdbcTemplateSomUtil" class="com.hola.bs.service.JdbcTemplateSomImpl" />
+    <bean id="jdbcTemplateSqlServerUtil" class="com.hola.bs.service.JdbcTemplateSqlServerImpl" />
+
+	<bean id="sqlpropertyUtil" class="com.hola.bs.property.SQLPropertyUtil" />
+
+	<bean id="configpropertyUtil" class="com.hola.bs.property.ConfigPropertyUtil" />
+
+	<bean id="systemUtil" class="com.hola.bs.service.SystemUtilImpl" />
+
+	<bean id="login" class="com.hola.bs.service.hht.Login" />
+
+	<bean id="logout" class="com.hola.bs.service.hht.Logout">
+		<property name="uc" ref="userContainer" />
+	</bean>
+
+	<bean id="userContainer" class="com.hola.bs.core.UserContainer">
+		<property name="uv" ref="useVerify" />
+	</bean>
+
+	<bean id="useVerify" class="com.hola.bs.bean.UseVerify">
+		<property name="login" ref="login" />
+		<property name="userContainer" ref="userContainer" />
+	</bean>
+
+	<bean id="hht_001_01" class="com.hola.bs.service.hht.HHT_001_01" />
+	<bean id="hht_001_02" class="com.hola.bs.service.hht.HHT_001_02" />
+	<bean id="hht_001_03" class="com.hola.bs.service.hht.HHT_001_03" />
+	<bean id="hht_001_04" class="com.hola.bs.service.hht.HHT_001_04" />
+	<bean id="hht_001_05" class="com.hola.bs.service.hht.HHT_001_05" />
+	<bean id="hht_001_06" class="com.hola.bs.service.hht.HHT_001_06" />
+	<bean id="hht_002_01" class="com.hola.bs.service.hht.HHT_002_01" />
+	<bean id="hht_002_02" class="com.hola.bs.service.hht.HHT_002_02" />
+	<bean id="hht_002_05" class="com.hola.bs.service.hht.HHT_002_05" />
+	<bean id="hht_003_01" class="com.hola.bs.service.hht.HHT_003_01" />
+	<bean id="hht_004_01" class="com.hola.bs.service.hht.HHT_004_01" />
+	<bean id="hht_004_02" class="com.hola.bs.service.hht.HHT_004_02" />
+	<bean id="hht_004_03" class="com.hola.bs.service.hht.HHT_004_03" />
+	<bean id="hht_004_04" class="com.hola.bs.service.hht.HHT_004_04" />
+	<bean id="hht_005_01" class="com.hola.bs.service.hht.HHT_005_01" />
+	<bean id="hht_005_02" class="com.hola.bs.service.hht.HHT_005_02" />
+	<bean id="hht_005_05" class="com.hola.bs.service.hht.HHT_005_05" />
+	<bean id="hht_006_01" class="com.hola.bs.service.hht.HHT_006_01" />
+	<bean id="hht_101_01" class="com.hola.bs.service.hht.HHT_101_01" />
+	<bean id="hht_101_02" class="com.hola.bs.service.hht.HHT_101_02" />
+	<bean id="hht_101_03" class="com.hola.bs.service.hht.HHT_101_03" />
+	<bean id="hht_101_04" class="com.hola.bs.service.hht.HHT_101_04" />
+	<bean id="hht_102_01" class="com.hola.bs.service.hht.HHT_102_01" />
+	<bean id="hht_103_01" class="com.hola.bs.service.hht.HHT_103_01" />
+	<bean id="hht_103_02" class="com.hola.bs.service.hht.HHT_103_02" />
+	<bean id="hht_103_03" class="com.hola.bs.service.hht.HHT_103_03" />
+	<bean id="hht_104_03" class="com.hola.bs.service.hht.HHT_104_03" />
+	<bean id="hht_104_01" class="com.hola.bs.service.hht.HHT_104_01" />
+	<bean id="hht_104_02" class="com.hola.bs.service.hht.HHT_104_02" />
+	<bean id="hht_104_05" class="com.hola.bs.service.hht.HHT_104_05" />
+	<bean id="hht_105_01" class="com.hola.bs.service.hht.HHT_105_01" />
+	<bean id="hht_105_02" class="com.hola.bs.service.hht.HHT_105_02" />
+	<bean id="hht_105_04" class="com.hola.bs.service.hht.HHT_105_04" />
+	<bean id="hht_106_01" class="com.hola.bs.service.hht.HHT_106_01" />
+	<bean id="hht_106_02" class="com.hola.bs.service.hht.HHT_106_02" />
+	<bean id="hht_107_01" class="com.hola.bs.service.hht.HHT_107_01" />
+	<bean id="hht_107_02" class="com.hola.bs.service.hht.HHT_107_02" />
+	<bean id="hht_005_04" class="com.hola.bs.service.hht.HHT_005_04" />
+	<bean id="hht_201_01" class="com.hola.bs.service.hht.HHT_201_01" />
+	<bean id="hht_202_01" class="com.hola.bs.service.hht.HHT_202_01" />
+	<bean id="hht_202_02" class="com.hola.bs.service.hht.HHT_202_02" />
+	<bean id="hht_203_01" class="com.hola.bs.service.hht.HHT_203_01" />
+	<bean id="hht_204_01" class="com.hola.bs.service.hht.HHT_204_01" />
+	<bean id="hht_204_02" class="com.hola.bs.service.hht.HHT_204_02" />
+	<bean id="hht_205_01" class="com.hola.bs.service.hht.HHT_205_01" />
+	<bean id="hht_207_01" class="com.hola.bs.service.hht.HHT_207_01" />
+	<bean id="hht_300_01" class="com.hola.bs.service.hht.HHT_300_01" />
+
+	<bean id="hht_S00_01" class="com.hola.bs.service.hht.HHT_S00_01" />
+	<bean id="hht_A00_01" class="com.hola.bs.service.hht.HHT_A00_01" />
+
+	<bean id="hht_500_01" class="com.hola.bs.service.hht.HHT_500_01" />
+	<bean id="hht_500_02" class="com.hola.bs.service.hht.HHT_500_02" />
+	<bean id="hht_500_03" class="com.hola.bs.service.hht.HHT_500_03" />
+	<bean id="hht_501_01" class="com.hola.bs.service.hht.HHT_501_01" />
+
+	<bean id="hht_600_01" class="com.hola.bs.service.hht.HHT_600_01" />
+	<bean id="hht_600_02" class="com.hola.bs.service.hht.HHT_600_02" />
+	<bean id="hht_600_03" class="com.hola.bs.service.hht.HHT_600_03" />
+	<bean id="hht_601_01" class="com.hola.bs.service.hht.HHT_601_01" />
+	<bean id="hht_601_02" class="com.hola.bs.service.hht.HHT_601_02" />
+	<bean id="hht_602_01" class="com.hola.bs.service.hht.HHT_602_01" />
+
+	<bean id="hht_700_01" class="com.hola.bs.service.hht.HHT_700_01" />
+	<bean id="hht_700_02" class="com.hola.bs.service.hht.HHT_700_02" />
+	<bean id="hht_701_01" class="com.hola.bs.service.hht.HHT_701_01" />
+	<bean id="hht_701_02" class="com.hola.bs.service.hht.HHT_701_02" />
+
+	<bean id="hht_800_01" class="com.hola.bs.service.hht.HHT_800_01" />
+
+	<!-- 营业课部分 -->
+	<bean id="hht_1011_01" class="com.hola.bs.service.hht.HHT_1011_01" />
+	<bean id="hht_1012_01" class="com.hola.bs.service.hht.HHT_1012_01" />
+	<bean id="hht_1013_01" class="com.hola.bs.service.hht.HHT_1013_01" />
+	<bean id="hht_1021_01" class="com.hola.bs.service.hht.HHT_1021_01" />
+	<bean id="hht_1022_01" class="com.hola.bs.service.hht.HHT_1022_01" />
+	<bean id="hht_1023_01" class="com.hola.bs.service.hht.HHT_1023_01" />
+	<bean id="hht_1024_01" class="com.hola.bs.service.hht.HHT_1024_01" />
+	<bean id="hht_1031_01" class="com.hola.bs.service.hht.HHT_1031_01" />
+	<bean id="hht_1032_01" class="com.hola.bs.service.hht.HHT_1032_01" />
+	<bean id="hht_1033_01" class="com.hola.bs.service.hht.HHT_1033_01" />
+	<bean id="hht_1033_02" class="com.hola.bs.service.hht.HHT_1033_02" />
+	<bean id="hht_1034_01" class="com.hola.bs.service.hht.HHT_1034_01" />
+	<bean id="hht_1034_02" class="com.hola.bs.service.hht.HHT_1034_02" />
+	<bean id="hht_1035_01" class="com.hola.bs.service.hht.HHT_1035_01" />
+	<bean id="hht_1035_02" class="com.hola.bs.service.hht.HHT_1035_02" />
+	<bean id="hht_1036_01" class="com.hola.bs.service.hht.HHT_1036_01" />
+	<bean id="hht_1041_01" class="com.hola.bs.service.hht.HHT_1041_01" />
+	<bean id="hht_1041_02" class="com.hola.bs.service.hht.HHT_1041_02" />
+	<bean id="hht_1042_02" class="com.hola.bs.service.hht.HHT_1042_02" />
+	<bean id="hht_1043_01" class="com.hola.bs.service.hht.HHT_1043_01" />
+	<bean id="hht_1043_02" class="com.hola.bs.service.hht.HHT_1043_02" />
+	<bean id="hht_1044_01" class="com.hola.bs.service.hht.HHT_1044_01" />
+	<bean id="hht_1044_02" class="com.hola.bs.service.hht.HHT_1044_02" />
+<bean id="hht_1045_01" class="com.hola.bs.service.hht.HHT_1045_01" />
+<bean id="hht_1045_02" class="com.hola.bs.service.hht.HHT_1045_02" />
+<bean id="hht_1045_03" class="com.hola.bs.service.hht.HHT_1045_03" />
+<bean id="hht_1045_04" class="com.hola.bs.service.hht.HHT_1045_04" />
+<bean id="hht_1045_05" class="com.hola.bs.service.hht.HHT_1045_05" />
+<bean id="hht_1046_01" class="com.hola.bs.service.hht.HHT_1046_01" />
+<bean id="hht_1046_02" class="com.hola.bs.service.hht.HHT_1046_02" />
+<bean id="hht_1046_03" class="com.hola.bs.service.hht.HHT_1046_03" />
+<bean id="hht_1046_04" class="com.hola.bs.service.hht.HHT_1046_04" />
+<bean id="hht_1047_01" class="com.hola.bs.service.hht.HHT_1047_01" />
+<bean id="hht_1047_02" class="com.hola.bs.service.hht.HHT_1047_02" />
+<bean id="hht_1047_03" class="com.hola.bs.service.hht.HHT_1047_03" />
+<bean id="hht_1047_05" class="com.hola.bs.service.hht.HHT_1047_05" />
+
+
+
+	<!-- 打印模板专用 -->
+	<bean id="hht_002_03" class="com.hola.bs.service.hht.HHT_002_03" />
+	<bean id="hht_005_03" class="com.hola.bs.service.hht.HHT_005_03" />
+	<bean id="hht_002_04" class="com.hola.bs.service.hht.HHT_002_04" />
+	<bean id="hht_104_04" class="com.hola.bs.service.hht.HHT_104_04" />
+	<bean id="hht_105_03" class="com.hola.bs.service.hht.HHT_105_03" />
+	<bean id="hht_101_05" class="com.hola.bs.service.hht.HHT_101_05" />
+	<bean id="hht_202_03" class="com.hola.bs.service.hht.HHT_202_03" />
+	<bean id="hht_106_03" class="com.hola.bs.service.hht.HHT_106_03" />
+	<bean id="hht_203_02" class="com.hola.bs.service.hht.HHT_203_02" />
+	<bean id="hht_202_04" class="com.hola.bs.service.hht.HHT_202_04" />
+	<bean id="hht_1046_05" class="com.hola.bs.service.hht.HHT_1046_05" />
+	<bean id="hht_1047_04" class="com.hola.bs.service.hht.HHT_1047_04" />
+	<bean id="hht_108_01" class="com.hola.bs.service.hht.HHT_108_01" />
+	<bean id="hht_108_02" class="com.hola.bs.service.hht.HHT_108_02" />
+	<bean id="hht_109_02" class="com.hola.bs.service.hht.HHT_109_02" />
+	<bean id="hht_109_01" class="com.hola.bs.service.hht.HHT_109_01" />
+	<bean id="hht_110_02" class="com.hola.bs.service.hht.HHT_110_02" />
+	<bean id="hht_110_01" class="com.hola.bs.service.hht.HHT_110_01" />
+	<bean id="hht_111_02" class="com.hola.bs.service.hht.HHT_111_02" />
+	<bean id="hht_111_01" class="com.hola.bs.service.hht.HHT_111_01" />
+	<bean id="hht_112_02" class="com.hola.bs.service.hht.HHT_112_02" />
+	<bean id="hht_112_01" class="com.hola.bs.service.hht.HHT_112_01" />
+	<bean id="hht_113_02" class="com.hola.bs.service.hht.HHT_113_02" />
+	<bean id="hht_113_01" class="com.hola.bs.service.hht.HHT_113_01" />
+        <bean id="hht_501_02" class="com.hola.bs.service.hht.HHT_501_02" />
+        <bean id="hht_501_03" class="com.hola.bs.service.hht.HHT_501_03" />
+        <bean id="hht_501_04" class="com.hola.bs.service.hht.HHT_501_04" />
+	<!-- hht_203_02打印流程做优化，需要配置如下 -->
+	<bean id="abstract_hht_203_02"
+		class="com.hola.bs.service.hht.strategy_HHT_203_02.AbstractProcess_HHT_203_02"
+		abstract="true" />
+	<bean id="po_process_hht_203_02"
+		class="com.hola.bs.service.hht.strategy_HHT_203_02.PO_Process_HHT_203_02" />
+	<bean id="transfer_process_hht_203_02"
+		class="com.hola.bs.service.hht.strategy_HHT_203_02.Transfer_Process_HHT_203_02" />
+	<!-- hht_203_02打印流程做优化配置结束 -->
+
+
+
+
+	<bean id="requestValidation" class="com.hola.bs.bean.RequestValidation" />
+	<bean id="printTemplateFactory" class="com.hola.bs.print.template.PrintTemplateFactory">
+		<property name="printTemplateMap">
+			<map>
+				<entry key="PrintTemplate1">
+					<ref bean="printTemplate1" />
+				</entry>
+				<entry key="PrintTemplate2">
+					<ref bean="printTemplate2" />
+				</entry>
+				<entry key="PrintTemplate3">
+					<ref bean="printTemplate3" />
+				</entry>
+				<entry key="PrintTemplate4">
+					<ref bean="printTemplate4" />
+				</entry>
+				<entry key="PrintTemplate5">
+					<ref bean="printTemplate5" />
+				</entry>
+				<entry key="PrintTemplate6">
+					<ref bean="printTemplate6" />
+				</entry>
+				<entry key="PrintTemplate7">
+					<ref bean="printTemplate7" />
+				</entry>
+				<entry key="PrintTemplate8Trf">
+					<ref bean="printTemplate8Trf" />
+				</entry>
+				<entry key="PrintTemplate8Rtv">
+					<ref bean="printTemplate8Rtv" />
+				</entry>
+				<entry key="PrintTemplate9">
+					<ref bean="printTemplate9" />
+				</entry>
+				<entry key="PrintTemplate10">
+					<ref bean="printTemplate10" />
+				</entry>
+				<entry key="PrintTemplate11">
+					<ref bean="printTemplate11" />
+				</entry>
+				<entry key="PrintTemplate12">
+					<ref bean="printTemplate12" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="printTemplate1" class="com.hola.bs.print.template.PrintTemplate1" />
+	<bean id="printTemplate2" class="com.hola.bs.print.template.PrintTemplate2" />
+	<bean id="printTemplate3" class="com.hola.bs.print.template.PrintTemplate3" />
+	<bean id="printTemplate4" class="com.hola.bs.print.template.PrintTemplate4" />
+	<bean id="printTemplate5" class="com.hola.bs.print.template.PrintTemplate5" />
+	<bean id="printTemplate6" class="com.hola.bs.print.template.PrintTemplate6" />
+	<bean id="printTemplate7" class="com.hola.bs.print.template.PrintTemplate7" />
+	<bean id="printTemplate8Trf" class="com.hola.bs.print.template.PrintTemplate8Trf" />
+	<bean id="printTemplate8Rtv" class="com.hola.bs.print.template.PrintTemplate8Rtv" />
+<bean id="printTemplate9" class="com.hola.bs.print.template.PrintTemplate9" />
+<bean id="printTemplate10" class="com.hola.bs.print.template.PrintTemplate10" />
+<bean id="printTemplate11" class="com.hola.bs.print.template.PrintTemplate11" />
+<bean id="printTemplate12" class="com.hola.bs.print.template.PrintTemplate12" />
+
+	<!-- 动态客户端对象的注入，取消原先写死RMI调用的方法 -->
+	<bean id="dynamicRmiClient" class="com.hola.bs.print.rmi.DynamicRmiClient" />
+
+	<!-- aop配置异常拦截器 -->
+	<!-- 注入异常拦截器 -->
+	<bean id="throwsAdvice" class="com.hola.bs.core.interceptor.ExceptionHandler" />
+	<!-- 配置代理对象去执行拦截器的操作 --><!-- 暂时先不用 -->
+	<bean id="beanNameAutoProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>printTemplate*</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<value>throwsAdvice</value>
+		</property>
+	</bean>
+
+	<!-- ****************************************************************************************************** -->
+	<!-- **************************************spring管理事务通过ANNOTATION的方法********************************** -->
+	<!-- ****************************************************************************************************** -->
+	<!-- 注入数据源 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dsMysql"></property>
+	</bean>
+
+	<bean id="jdbcTemplateSom" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dsOracle"></property>
+	</bean>
+
+	<bean id="jdbcTemplateSqlServer" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dsSqlServer"></property>
+	</bean>
+
+	<!-- 创建事务 nestedTransactionAllowed=true 表示允许嵌套事务 有的事务传播性为Propagation.NESTED -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dsMysql"></property>
+		<property name="nestedTransactionAllowed" value="true"></property>
+	</bean>
+
+	<!-- 使@Transactional能够工作 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 使@Autowired能够工作 -->
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+
+
+
+</beans>

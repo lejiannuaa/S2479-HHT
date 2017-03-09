@@ -1,0 +1,89 @@
+#templateName
+#template1Name=1_PO差异单.xls
+#template2Name=2_PO收货单.xls
+#template3Name=3_调拨差异单.xls
+#template4Name=4_调拨收货.xls
+#template5Name=5_出货单.xls
+#template6Name=6_箱明细清单.xls
+#template7Name=7_调拨出货单.xls
+#template8Name=8_出货箱单.xls
+
+template1Name=1_PO_cha_yi_dan.xls
+template2Name=2_PO_shuo_huo_dan.xls
+template3Name=3_diao_bo_cha_yi_dan.xls
+template4Name=4_diao_bo_shou_huo.xls
+template5Name=5_chu_huo_dan.xls
+template6Name=6_xiang_ming_xi_qing_dan.xls
+template7Name=7_diao_bo_chu_huo_dan.xls
+template8Name=8_chu_huo_xiang_dan.xls
+
+#指定模板对应的打印机
+template1PrinterName=c4300-3f-left
+template2PrinterName=Microsoft XPS Document Writer
+template3PrinterName=Microsoft XPS Document Writer
+template4PrinterName=Microsoft XPS Document Writer
+template5PrinterName=Microsoft XPS Document Writer
+template6PrinterName=Microsoft XPS Document Writer
+template7PrinterName=Microsoft XPS Document Writer
+template8PrinterName=Microsoft XPS Document Writer
+
+#PO header
+template1headerSql=SELECT D1SHNB as D1SHNB\, D1STLC as VENDOR\, D1TOLC as STONO \, concat(a5strn\, '-'\, a5add) as A5ADDR \, a5tel as A5TEL\, HHTVND as VENDORCODE\, HHTVNM as VENDORNAME\, HHTVA2 as VENDORADDR\, HHTVA2 as RECIPEADDR\, D1ENTD as RECIPEDATE\, D1USER as PURCHASER\, D1SHPD as SENDDATE\, crtdate as RECEIVEDATE\, CRTUSER as RECEIVER\, DATE_FORMAT(NOW()\, '%Y%m%d') as PRINTDATE FROM schema.JDAID1HF a LEFT JOIN ( SELECT a5strn\, a5tel\, a5add\, a5str\, a5fax FROM schema.htoa5f ) b ON D1TOLC= b.a5str LEFT JOIN ( SELECT hhtvnd\, hhtvnm\, hhtva1\, hhtva2 FROM schema.HTOA4F ) c ON a.D1STLC = c.HHTVND WHERE a.D1SHNB = ? 
+
+#PO差异明细 005.04
+template1detailSql=SELECT D1SKU\, HHTDSC\, D6LCRQ\, IFNULL(CONCAT(D6LCRC\, '|' \, ( SELECT TBLDSC FROM schema.HHTINIT WHERE TBLVAL = D6LCRC AND TBLNAM= 'SHTREA' ))\,'') D6LCRC FROM schema.JDAID1HF a\, schema.JDAID1DF b LEFT JOIN schema.HTOA1F c ON b.D1SKU= c.HHTSKU LEFT JOIN schema.JDAOD6F d ON b.D1SKU = d6sku and b.D1SHNB = d.D6CNO WHERE a.D1SHNB = b.D1SHNB and a.D1SHNB = b.D1SHNB and a.D1SHNB = ?
+
+#PO差异总计
+template1totalDifSql=SELECT sum(D6LCRQ) as TTDIF from schema.JDAOD6F where D6CNO = ? 
+#PO
+#PO收货明细 005.03
+template2detailSql=SELECT D1SKU\, HHTDSC\, D1REQT\, D1SHQT \, D1SHQT-D1REQT as diff FROM schema.JDAID1HF a\, schema.JDAID1DF b LEFT JOIN schema.HTOA1F c ON b.D1SKU= c.HHTSKU WHERE a.D1SHNB = b.D1SHNB and a.D1SHNB = ?
+
+#PO收货总计 005.03
+template2TotalSql=SELECT sum(D1REQT) as ODRQTY\, sum(D1SHQT) as RECQTY\, sum(D1SHQT)-sum(D1REQT) as HHTDIF from schema.jdaid1hf a\, schema.jdaid1df b where a.D1SHNB = b.D1SHNB and a.D1SHNB = ?
+
+#调入店
+template3headerSql1=SELECT concat(HHTFLC\,'-'\,a.a5strn) as HHTFLC\, a.A5TEL as FA5TEL\, a.A5ADD as FA5ADD FROM schema.jdaid2hf LEFT JOIN ( SELECT a5strn\, a5tel\, a5add\, a5str FROM schema.htoa5f ) a ON HHTFLC= a.a5str WHERE HHTCNO = ?
+#调出店
+template3headerSql2=SELECT concat(HHTTLC\,'-'\,b.a5strn) as HHTTLC\, b.A5TEL as TA5TEL\, b.A5ADD as TA5ADD FROM schema.jdaid2hf LEFT JOIN ( SELECT a5strn\, a5tel\, a5add\, a5str FROM schema.htoa5f ) b ON HHTTLC= b.a5str WHERE HHTCNO = ?
+
+
+#调拨差异 002_03
+template3detailSql=SELECT B.HHTSKU\, HHTDSC\, D6LCRQ\, CONCAT(D6LCRC\, '|' \, ( SELECT TBLDSC FROM schema.HHTINIT WHERE TBLVAL = D6LCRC AND TBLNAM= 'SHTREA' ) ) AS D6LCRC FROM schema.JDAID2HF A\, schema.JDAID2DF B LEFT JOIN schema.HTOA1F C ON B.HHTSKU= C.HHTSKU \, schema.JDAOD6F D WHERE B.HHTSKU = D6SKU AND B.HHTCNO = D.D6CASN AND A.HHTCNO = B.HHTCNO AND A.HHTCNO = ?
+
+#调拨差异总计
+templdate3DifTotalSql=SELECT sum(D6LCRQ) as ttQty from schema.JDAOD6F A where A.D6CASN = ?
+
+#调拨收货明细 002_04
+template4detailSql=SELECT  b.HHTSKU\, HHTDSC\,  HHTPQT\, HHTRQT\, HHTRQT-HHTPQT AS HHTDIF FROM schema.JDAID2HF a\, schema.JDAID2DF b LEFT JOIN schema.HTOA1F c ON b.HHTSKU= c.HHTSKU WHERE a.HHTCNO = b.HHTCNO and a.hhtcno = ?
+#SELECT b.HHTSKU\, HHTDSC\, '' AS 规格\, HHTPQT\, HHTRQT\, HHTRQT-HHTPQT AS HHTDF FROM schema.JDAID2HF a\, schema.JDAID2DF b LEFT JOIN schema.HTOA1F c ON b.HHTSKU= c.HHTSKU LEFT JOIN schema.JDAOD6F d ON b.HHTSKU = d6sku and b.HHTCNO = d.d6casn WHERE a.HHTCNO = b.HHTCNO and a.hhtcno = ?
+
+
+#调拨收货数量总计
+template4TotalSql=SELECT SUM(HHTPQT) AS HHTPQT \, SUM(HHTRQT) AS HHTRQT\,SUM(HHTRQT)-SUM(HHTPQT) AS SUMDIF FROM schema.JDAID2HF A\, schema.JDAID2DF B LEFT JOIN schema.HTOA1F C ON B.HHTSKU= C.HHTSKU  WHERE A.HHTCNO = B.HHTCNO AND A.HHTCNO=?
+
+#退货单表头
+template5headerSql=SELECT concat(concat('*' \, c5.HHTCNO) \, '*') as HHTCNO\, c5.HHTFLC as HHTFLC \, ( SELECT a5strn FROM schema.htoa5f WHERE a5str = c5.HHTFLC ) as FLCD\, c5.HHTTLC\, (if(c1.HHTOCD = 'RTV'\, ( SELECT hhtvnm as 厂商描述 FROM schema.htoa4f WHERE hhtvnd= c5.HHTTLC ) \, ( SELECT a5strn FROM schema.htoa5f WHERE a5str = c5.HHTTLC ) ) ) as HHTTLCD \, concat(concat('*' \, c5.HHTNO) \, '*') as HHTNO\, c1.HHTCRTDT as crtdt\, if(c1.HHTOCD = 'RTV'\, '' \, ( SELECT A5TEL FROM schema.htoa5f WHERE a5str = c5.HHTTLC ) ) as A5TEL\, if(c1.HHTOCD = 'RTV'\, '' \, ( SELECT A5FAX FROM schema.htoa5f WHERE a5str = c5.HHTTLC ) ) as A5FAX\, if(c1.HHTOCD = 'RTV'\, ( SELECT HHTVA1 as A5ADD FROM schema.htoa4f WHERE hhtvnd= c5.HHTTLC ) \, ( SELECT A5ADD FROM schema.htoa5f WHERE a5str = c5.HHTTLC ) ) as A5ADD FROM schema.JDAIC5HF c5 LEFT JOIN schema.JDAIC1HF c1 ON c1.hhtcno= c5.hhtcno WHERE c5.HHTNO = ? and c5.HHTCNO=?
+#退货单明细
+template5detailSql=SELECT B.HHTSKU\, C.HHTDSC 商品名称\, HHTOQT AS 请退数量\, ifnull(( SELECT TBLDSC FROM schema.HHTINIT WHERE TBLNAM = 'SHTREA' AND TBLNAM = HHTSRN ) \,'')AS 退货原因描述 FROM schema.JDAIC1HF A left join schema.JDAIC5HF c5 on a.hhtcno=c5.hhtcno\, schema.JDAIC1DF B LEFT JOIN schema.HTOA1F C ON B.HHTSKU= C.HHTSKU WHERE A.HHTCNO = B.HHTCNO AND c5.HHTNO = ? and c5.HHTCNO=?
+#退货单明细总计
+template5totalSql=SELECT sum(b.HHTOQT) as sum_\, count(b.HHTAQT) as count_ FROM schema.JDAIC1HF A LEFT JOIN schema.JDAIC5HF c5 ON a.hhtcno= c5.hhtcno\, schema.JDAIC1DF B LEFT JOIN schema.HTOA1F C ON B.HHTSKU= C.HHTSKU WHERE A.HHTCNO = B.HHTCNO AND c5.HHTNO = ? and c5.HHTCNO=?
+
+#箱明细清单表头
+template6headerSql=SELECT  concat(concat('*' \, HHTCNO) \, '*') as HHTCNO\, HHTNO\, concat(HHTFLC \,'-'\, ( SELECT a5strn FROM schema.htoa5f WHERE a5str = HHTFLC ))as HHTFLC\, concat(HHTTLC\,'-'\,(if(HHTOCD = 'RTV'\, ( SELECT hhtvnm as 厂商描述 FROM schema.htoa4f WHERE hhtvnd= HHTTLC ) \, ( SELECT a5strn FROM schema.htoa5f WHERE a5str = HHTTLC ) ) )) as HHTTLC FROM schema.JDAIC1HF WHERE HHTCNO = ?
+
+#箱明细清单明细
+template6detailSql=SELECT 'ids' as num\, B.HHTSKU\, C.HHTDSC 商品名称\, HHTAQT AS 请退数量\, HHTSRN AS 退货原因 \, ( SELECT TBLDSC FROM schema.HHTINIT WHERE TBLNAM = 'SHTREA' AND TBLNAM = HHTSRN ) AS 退货原因描述 FROM schema.JDAIC1HF A\, schema.JDAIC1DF B LEFT JOIN schema.HTOA1F C ON B.HHTSKU= C.HHTSKU WHERE A.HHTCNO = B.HHTCNO AND a.HHTCNO =?
+
+#箱明细合计
+template6TotalSql=select sum(HHTAQT) as count_ from schema.jdaic1df where HHTCNO=?
+
+#调拨出货单表头
+template7headerSql=select concat(concat('*'\,c5h.hhtno \,'*')) as HHTNO\, a5f.a5strn HHTFLC\, a5f.a5add FLCADD\, a5f.a5tel TEL\, a5f2.a5strn HHTTLC\, a5f2.a5add TLCADD\, a5f2.a5tel TTEL\, concat(concat('*'\, c5h.HHTCNO\, '*')) HHTCNO\, sum(c1d.hhtaqt) OUTQTY\, sum(c1d.hhtoqt) ACTQTY from schema.htoa5f a5f\,schema.htoa5f a5f2\, schema.jdaic5hf c5h\, schema.jdaic1hf c1h\, schema.jdaic1df c1d where c5h.hhtno = ? and c5h.hhtcno = c1h.hhtcno and c1h.hhtcno = c1d.hhtcno and c5h.hhtflc = a5f.a5str and a5f2.a5str = c5h.hhttlc and c5h.hhtcno = ? group by c1d.hhtcno
+#调拨出货单明细
+template7detailSql=select c1d.hhtsku 货号\, a1f.hhtdsc Description\, c1d.hhtaqt 出货量\, c1d.hhtoqt 实出数量 from schema.jdaic1df c1d left join schema.htoa1f a1f on c1d.hhtsku = a1f.hhtsku where c1d.hhtcno = ?
+
+#退货出货箱单
+template8headerRtvSql=select a5f.a5strn as sto_desc\, c1h.HHTTYP\, concat('*'\,c5h.hhtno\,'*') as HHTNO\, concat('*'\,c1h.hhtcno\,'*') as HHTCNO\, sum(c1d.hhtoqt) as boxCount\,a4f.hhtvnm as HHTTLC\,a4f.hhtvnd as TLCCODE from schema.htoa5f a5f\, schema.jdaic1hf c1h\, schema.jdaic1df c1d\,schema.htoa4f a4f\,schema.jdaic5hf c5h where a5f.a5str = ? and c5h.hhtcno = ? and c5h.hhthno = c1h.hhthno and c5h.hhtcno = c1h.hhtcno and c1h.hhtcno = c1d.hhtcno and a4f.hhtvnd = c1h.hhttlc and c1h.hhttyp = ? group by c1d.hhtcno
+#调拨出货箱单
+template8headerTrfSql=select a5f.a5strn sto_desc\, c1h.HHTTYP\, concat('*'\,c5h.hhtno\,'*') HHTNO\, concat('*'\,c1h.hhtcno\,'*') HHTCNO\, sum(c1d.hhtoqt) boxCount\,a5f2.a5strn HHTTLC\, a5f2.a5str TLCCODE from schema.htoa5f a5f\, schema.jdaic1hf c1h\, schema.jdaic1df c1d\,schema.htoa5f a5f2\,schema.jdaic5hf c5h where a5f.a5str = ? and c5h.hhtcno = ? and c5h.hhthno = c1h.hhthno and c5h.hhtcno = c1h.hhtcno and c1h.hhtcno = c1d.hhtcno and a5f2.a5str = c1h.hhttlc and c1h.hhttyp = ? group by c1d.hhtcno

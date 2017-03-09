@@ -1,0 +1,9 @@
+#\u4E2D\u6587
+hhtServer.jdbc.driverClassName=com.mysql.jdbc.Driver
+hhtServer.jdbc.url=jdbc:mysql://10.130.1.43:3309/hhtserver
+hhtServer.jdbc.username=root
+hhtServer.jdbc.password=root
+store.jdbc.driverClassName=com.mysql.jdbc.Driver
+store.jdbc.url=jdbc:mysql://10.130.1.43:3309
+store.jdbc.username=root
+store.jdbc.password=root

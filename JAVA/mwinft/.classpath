@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="mqlibs/com.ibm.mq.jar"/>
+	<classpathentry kind="lib" path="mqlibs/com.ibm.mqjms.jar"/>
+	<classpathentry kind="lib" path="mqlibs/dhbcore.jar"/>
+	<classpathentry kind="lib" path="mqlibs/javaee.jar"/>
+	<classpathentry kind="lib" path="mqlibs/jms.jar"/>
+	<classpathentry kind="lib" path="mqlibs/spring-jms.jar"/>
+	<classpathentry kind="lib" path="springlibs/c3p0-0.9.1.2.jar"/>
+	<classpathentry kind="lib" path="springlibs/com.ibm.mq.tools.ras.jar"/>
+	<classpathentry kind="lib" path="springlibs/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="springlibs/connector.jar"/>
+	<classpathentry kind="lib" path="springlibs/jt400.jar"/>
+	<classpathentry kind="lib" path="springlibs/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="springlibs/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="springlibs/spring-beans.jar"/>
+	<classpathentry kind="lib" path="springlibs/spring-context.jar"/>
+	<classpathentry kind="lib" path="springlibs/spring-core.jar"/>
+	<classpathentry kind="lib" path="springlibs/spring-dao.jar"/>
+	<classpathentry kind="lib" path="springlibs/spring-jdbc.jar"/>
+	<classpathentry kind="lib" path="springlibs/spring-tx.jar"/>
+	<classpathentry kind="lib" path="springlibs/spring-web.jar"/>
+	<classpathentry kind="lib" path="maillibs/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="maillibs/commons-email-1.1.jar"/>
+	<classpathentry kind="lib" path="maillibs/mail-1.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

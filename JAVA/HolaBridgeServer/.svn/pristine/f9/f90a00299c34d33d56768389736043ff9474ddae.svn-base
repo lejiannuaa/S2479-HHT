@@ -1,0 +1,143 @@
+package com.hola.bs.service.hht;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.MDC;
+
+import com.hola.bs.bean.BusinessBean;
+import com.hola.bs.impl.ProcessUnit;
+import com.hola.bs.impl.Request;
+import com.hola.bs.service.BusinessService;
+import com.hola.bs.util.Config;
+import com.hola.bs.util.XmlElement;
+
+/**
+ * 折扣详细查询
+ * @author S2139
+ * 2012 Aug 29, 2012 11:53:21 AM 
+ */
+public class HHT_1013_01 extends BusinessService implements ProcessUnit {
+
+	public String process(Request request) {
+		// TODO Auto-generated method stub
+		BusinessBean bean = new BusinessBean();
+		try {
+			bean = resolveRequest(request);
+			processData(bean);
+		} catch (Exception e) {
+			bean.getResponse().setCode(BusinessService.errorcode);
+			bean.getResponse().setDesc("系统错误，请联系管理员。" + e.getMessage());
+			log.error("", e);
+		}
+		MDC.put("userNo", bean.getUser().getName());
+		MDC.put("stoNo", bean.getRequest().getParameter("sto"));
+		log.info("营业课--价格查询--商品折扣查询, response="+bean.getResponse().toString());
+
+		return bean.getResponse().toString();
+
+	}
+
+	private void processData(BusinessBean bean) throws Exception{
+		// TODO Auto-generated method stub
+		String store = bean.getRequest().getParameter(configpropertyUtil.getValue("sto"));
+		String sku = bean.getRequest().getParameter(configpropertyUtil.getValue("sku"));
+		if(sku.length()>UPC_LENGTH_TWELVE){
+			sku = tranUPCtoSKU(store, sku);
+		}else if(sku.length()>SKU_LENGTH && sku.length()<=UPC_LENGTH_TWELVE){
+			sku = tranUPCtoSKUforLengthNinetoEleven(store, sku);
+		}else if(sku.length() < IPC_LENGTH){
+			sku = fullSKU(sku);
+		}else if(sku.length() == IPC_LENGTH ){//ipc转换成SKU\
+			
+			if(sku.substring(0, 1).equals("2")){
+				String sql = sqlpropertyUtil.getValue(store, "hht1011.01.04");
+				List<Map> skuList = jdbcTemplateUtil.searchForList(sql,new Object[]{sku});
+				if(skuList!=null&&skuList.size()>0){
+					sku = skuList.get(0).get("hhtsku").toString();
+				}
+			}else{
+				String sql = sqlpropertyUtil.getValue(store, "hht1011.01.00");
+				List<Map> skuList = jdbcTemplateUtil.searchForList(sql,new Object[]{sku,sku,fullUPCTwelve(sku),fullUPCThirteen(sku)});
+				if(skuList!=null&&skuList.size()>0){
+					sku = skuList.get(0).get("hhtsku").toString();
+				}
+			}
+		}
+
+		
+		String sql = sqlpropertyUtil.getValue(store, "hht1013.01.01");
+		List<Map> detailList = jdbcTemplateUtil.searchForList(sql, new Object[]{store,sku,sku,sku});
+		
+		
+		//折扣详细查询POS
+		String mssql = sqlpropertyUtil.getValue(store, "hht1013.01.02");
+		List<Map> detailList2 = null;
+		detailList2 = jdbcTemplateSqlServerUtil.searchForList(mssql, new Object[] {sku.substring(3, 9)});
+		
+		/*
+		if(store.equals("11108"))
+		{
+			detailList2 = jdbcTemplateSqlServerUtil2.searchForList(mssql, new Object[] {sku.substring(3, 9)});
+		}
+		else
+		{
+			detailList2 = jdbcTemplateSqlServerUtil.searchForList(mssql, new Object[] {sku.substring(3, 9)});
+		}
+		*/
+		
+		if(detailList2!=null&&detailList2.size()>0){
+			if(detailList2.get(0).get("MAM_NO")!=null)
+			{
+				log.info("参数=" + detailList2.get(0).get("MAM_NO").toString().substring(0, 6));
+				if(detailList2.get(0).get("MAM_NO").toString().substring(0, 6).equals("ZZZZZZ"))
+				{
+					String ACT_START_TIME = detailList2.get(0).get("MMP_BegDate").toString();
+					String ACT_END_TIME = detailList2.get(0).get("MMP_EndDate").toString();
+					
+					detailList.get(0).put("ACT_START_TIME", (ACT_START_TIME.substring(0, 4) + ACT_START_TIME.substring(5, 7) + ACT_START_TIME.substring(8, 10)));
+					detailList.get(0).put("ACT_END_TIME", (ACT_END_TIME.substring(0, 4) + ACT_END_TIME.substring(5, 7) + ACT_END_TIME.substring(8, 10)));
+					detailList.get(0).put("EVENT", "Z");
+					detailList.get(0).put("EVENT_DESC", "店内变价");
+				}
+			}
+		}
+		
+		if(detailList!=null&&detailList.size()>0){
+			if(detailList.get(0).get("EVENT")!=null){
+				if(detailList.get(0).get("EVENT").toString().equals("R")){
+					detailList.get(0).put("EVENT", "R-正常变价");
+				}else if(detailList.get(0).get("EVENT").toString().equals("T")){
+					detailList.get(0).put("EVENT", "T-印花促销");
+				}else if(detailList.get(0).get("EVENT").toString().equals("C")){
+					detailList.get(0).put("EVENT", "C-清仓促销");
+				}else if(detailList.get(0).get("EVENT").toString().equals("A")){
+					detailList.get(0).put("EVENT", "A-一般促销");
+				}else if(detailList.get(0).get("EVENT").toString().equals("S")){
+					detailList.get(0).put("EVENT", "S-店内促销");
+				}else if(detailList.get(0).get("EVENT").toString().equals("B")){
+					detailList.get(0).put("EVENT", "B-竞争促销");
+				}else if(detailList.get(0).get("EVENT").toString().equals("Z")){
+					detailList.get(0).put("EVENT", "Z-店内变价");
+				}
+				
+				Config c = new Config("11", "Server->Client：0", String.valueOf(bean.getRequest().getParameter("request"))
+						+ String.valueOf(bean.getRequest().getParameter(configpropertyUtil.getValue("op"))));
+				XmlElement[] xml = new XmlElement[1];
+				xml[0] = new XmlElement("detail", detailList);
+				writerFile(c, xml, bean);
+
+			}
+			else
+			{
+				bean.getResponse().setCode(BusinessService.warncode);
+				bean.getResponse().setDesc("该商品暂无折扣");
+			}
+
+		}else{
+			bean.getResponse().setCode(BusinessService.warncode);
+			bean.getResponse().setDesc(configpropertyUtil.getValue("msg.1011.01"));
+		}
+	}
+
+}

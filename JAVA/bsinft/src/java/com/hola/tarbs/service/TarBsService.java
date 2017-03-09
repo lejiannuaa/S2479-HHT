@@ -1,0 +1,639 @@
+package com.hola.tarbs.service;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import com.hola.common.SpringContextHelper;
+import com.hola.common.csv.model.DataBean;
+import com.hola.common.csv.model.LayerBean;
+import com.hola.common.dao.HhtserverDao;
+import com.hola.common.dao.StoreDao;
+import com.hola.common.exception.BscfgException;
+import com.hola.common.exception.GenerationCsvModelException;
+import com.hola.common.exception.ReceiveMqException;
+import com.hola.common.exception.SaveDataToBsException;
+import com.hola.common.exception.SendMqException;
+import com.hola.common.file.FileManager;
+import com.hola.common.model.Chginst;
+import com.hola.common.model.ChginstF;
+import com.hola.common.model.mw.BsLog;
+import com.hola.common.model.mw.ChgTbl;
+import com.hola.common.model.mw.Chginfo;
+import com.hola.common.model.mw.StoreInfo;
+import com.hola.common.mq.IMqHelper;
+import com.hola.common.mq.JmsHelper;
+import com.hola.common.service.BaseService;
+import com.hola.common.util.CommonUtil;
+import com.hola.common.util.StringUtil;
+import com.hola.common.util.TimeUtil;
+import com.hola.common.util.Uuid16;
+import com.hola.common.util.ZipUtils;
+import com.hola.tarbs.service.execution.Executor;
+
+public class TarBsService extends BaseService
+{
+	private static Log log = LogFactory.getLog(TarBsService.class);
+	
+	private		StoreDao						storeDao;
+	private		HhtserverDao					hhtserverDao;
+	private		PlatformTransactionManager		transactionManager;
+	private		TransactionTemplate				transactionTemplate;
+	
+	public void receiverForMqToSaveBs(StoreInfo storeInfo)
+	{
+		
+	}
+	
+	/**
+	 * 保存单个文件到bs
+	 * @author 王成(chengwangi@isoftstone.com)
+	 * @date 2013-1-7 上午11:46:08
+	 * @param storeInfo
+	 * @param csvFile
+	 * @param bsLog 
+	 * @param ackCsv.ack 
+	 * @throws GenerationCsvModelException			csv文件转对象出错时抛出此异常
+	 * @throws BscfgException 
+	 * @throws SaveDataToBsException 
+	 */
+	public void saveCsvToBs(StoreInfo storeInfo, File csvFile, AckCsv ackCsv, BsLog bsLog) throws GenerationCsvModelException, BscfgException, SaveDataToBsException
+	{
+		//增加日志查看效果
+		Thread.currentThread().setName(Uuid16.create().toString());
+		bsLog.setId(Thread.currentThread().getName());
+		List<LayerBean> layerList = null;
+		
+		//转换csv文件
+		log.info("读取csv文件，文件路径：" + csvFile.getPath());
+		try {
+			layerList = getLayerBean(csvFile.getPath());
+			ackCsv.ack = layerList;
+			ackCsv.ackFileName = csvFile.getName();
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+			log.error("csv转换文件出错!!!,文件路径：" + csvFile.getPath() , e);
+			GenerationCsvModelException gce = new GenerationCsvModelException("csv转换对象出错!!!");
+			throw gce;
+		}
+		
+		log.info("csv文件读取成功!文件路径:" + csvFile.getPath() + "开始载入配置...");
+		
+		//获取对应的配置
+		Chginfo chginfo = null;
+		try {
+			chginfo = getConfig(storeInfo, layerList);
+		} catch (Exception e) 
+		{
+			log.error("读取配置出错!!!" , e);
+			e.printStackTrace();
+			BscfgException be = new BscfgException("读取配置失败!!!");
+			throw be;
+		}
+		
+		//保存数据到BS
+		for(int i=0;i<5;i++)
+		{
+			try {
+				executionForBs(storeInfo, layerList, chginfo , bsLog);
+				break;
+			} catch (Exception e) 
+			{
+				log.error("保存JDA到BS的数据时出错!" , e);
+				if(i==4)
+				{
+					SaveDataToBsException sdtbe = new SaveDataToBsException("执行的csv文件是:" + csvFile.getPath());
+					throw sdtbe;
+				}
+			}
+		}
+		/*
+		try {
+			executionForBs(storeInfo, layerList, chginfo , bsLog);
+		} catch (Exception e) 
+		{
+			log.error("保存JDA到BS的数据时出错!" , e);
+			SaveDataToBsException sdtbe = new SaveDataToBsException("执行的csv文件是:" + csvFile.getPath());
+			throw sdtbe;
+		}
+		*/
+		
+	}
+	public List<StoreInfo> getStoreInfoList()
+	{
+		return hhtserverDao.getAllStoreInfo();
+	}
+	/**
+	 * 传入某门店对象，从此门店的mq中拉取数据，执行到mq，并发送ack文件到mq
+	 * @author 王成(chengwangi@isoftstone.com)
+	 * @date 2013-1-10 下午5:36:44
+	 * @param storeInfo
+	 */
+	@SuppressWarnings("static-access")
+	public void getCsvfilesForMqSaveBs(StoreInfo storeInfo)
+	{
+		IMqHelper mqHelper = new JmsHelper(storeInfo.getMqIp(), Integer.parseInt(storeInfo.getQMGPort()), storeInfo.getMqUserName(), storeInfo.getMqPwd(), storeInfo.getQMGName(), storeInfo.getIQName());
+		//MqHelper mqHelper = new MqHelper(storeInfo.getMqIp(), Integer.parseInt(storeInfo.getQMGPort()), storeInfo.getMqUserName(), storeInfo.getMqPwd(), storeInfo.getQMGName(), storeInfo.getAQName());
+		FileManager fm = new FileManager();
+		File directory = null;
+		try {
+			directory = fm.getCsvFileDirectoryForMqToBs(storeInfo.getStoreNo());
+			List<File> files = mqHelper.receivFileForZip(directory , storeInfo.getStoreNo());
+			
+			//saveMonitorTime(storeInfo.getDbSchema());
+			
+			for (int file1index=0;file1index<(files.size()-1);file1index++)
+			{	
+				for(int file2index=file1index+1;file2index<files.size();file2index++)
+				{
+					File file1 = files.get(file1index);
+					String file1time = file1.getName().substring(11, 28);
+					//int file1time = Integer.parseInt(file1.getName().substring(11, 28));
+					
+					File file2 = files.get(file2index);
+					String file2time = file2.getName().substring(11, 28);
+					
+					if(file1time.compareTo(file2time)>0)
+					{
+						files.remove(file1index);
+						files.add(file1index, file2);
+						files.remove(file2index);
+						files.add(file2index, file1);
+					}
+				}
+			}
+			
+			for (File csvFile : files) 
+			{
+				try {
+					executionOneFile(storeInfo, mqHelper, csvFile);
+				} catch (Exception e) {
+					e.printStackTrace();
+					log.error("保存到bs时出错,执行的文件: " + csvFile.getPath() , e);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.error("获取保存路径时异常!!!" , e);
+		} catch (ReceiveMqException e) 
+		{
+			e.printStackTrace();
+			log.error("从MQ接受数据时异常!文件保存路径:" + directory.getPath() + "MQ信息:" + mqHelper.getMqDetail() , e);
+		}
+		
+//		StoreInfo storeInfo = hhtserverDao.getStoreInfoForStoreNo(storeNo);
+//		File csvFile = new File("D:\\csvFromMqToBs\\20130107\\a.csv");
+	}
+
+	private void executionOneFile(StoreInfo storeInfo, IMqHelper mqHelper,File csvFile)
+	{
+		
+		AckCsv ackCsv = csvFileForMqSaveBs(storeInfo, csvFile);
+		
+		File ackFile = null;
+		if(ackCsv.ack != null)
+		{
+			try {
+				//写ack文件到硬盘
+				ackFile = saveAck(ackCsv.ack , ackCsv.ackFileName , storeInfo);
+			} catch (IOException e) {
+//				bsLog.setRemark("返回ack文件时出错!!!");
+				e.printStackTrace();
+			}
+		}
+		 
+		try {
+			IMqHelper ackMqHelper = new JmsHelper(storeInfo.getMqIp(), Integer.parseInt(storeInfo.getQMGPort()), storeInfo.getMqUserName(), storeInfo.getMqPwd(), storeInfo.getQMGName(), storeInfo.getAQName());
+			File zipAckFile = new File(ackFile.getParentFile() , ackFile.getName() + ".zip");
+			log.info("压缩ack文件" + zipAckFile.getPath());
+			new ZipUtils().zipFile(ackFile, zipAckFile);
+			ackMqHelper.sendFile(zipAckFile);
+		} catch (SendMqException e) {
+			log.error("发送ack文件时出错!" + ackFile.getPath() , e);
+			e.printStackTrace();
+		} catch (IOException e) {
+			log.error("压缩ack文件时发生异常!" + ackFile.getPath() , e);
+			e.printStackTrace();
+		}
+	}
+	public static void main(String[] args)
+	{
+		SpringContextHelper c = SpringContextHelper.getInstance();
+		
+		TarBsService service = (TarBsService) c.getBean("tarBsService");
+		StoreInfo si = service.getHhtserverDao().getStoreInfoForStoreNo("13102");
+		File csvFile = new File("d:\\public\\HD1D213102_20130312101808735_1018203.CSV");
+		service.csvFileForMqSaveBs(si, csvFile);
+	}
+	private AckCsv csvFileForMqSaveBs(StoreInfo storeInfo, File csvFile) 
+	{
+		BsLog bsLog = new BsLog();
+		bsLog.setStoreNo(storeInfo.getStoreNo());
+		bsLog.setFilName(csvFile.getPath());
+		bsLog.setStatus(BsLog.STATUS_SUCESS);
+		bsLog.setCrtTime(TimeUtil.formatDate(new Date(), TimeUtil.DATE_FORMAT_yyyyMMddHHmmss));
+		bsLog.setRemark("");
+		
+		AckCsv ackCsv = new AckCsv();
+		try 
+		{
+			log.info("保存csv到Bs...csvFile:" + csvFile.getPath());
+			this.saveCsvToBs(storeInfo, csvFile , ackCsv , bsLog);
+			bsLog.setFilName(csvFile.getPath());
+			//初始化将要返回的ack文件
+			for (LayerBean layerBean : ackCsv.ack)
+			{
+				layerBean.setDataSize(layerBean.getDataList().size());
+				layerBean.getDataList().clear();
+			}
+			
+		} catch (GenerationCsvModelException e) {
+			bsLog.setStatus(BsLog.STATUS_FAILURE);
+			bsLog.setRemark("读取csv文件时出错!!!");
+			setAckAccessSize(ackCsv.ack , 0);
+			e.printStackTrace();
+		} catch (BscfgException e) {
+			bsLog.setStatus(BsLog.STATUS_FAILURE);
+			bsLog.setRemark("读取hhtserver配置时出错!!!");
+			setAckAccessSize(ackCsv.ack , 0);
+			e.printStackTrace();
+		} catch (SaveDataToBsException e) {
+			bsLog.setStatus(BsLog.STATUS_FAILURE);
+			bsLog.setRemark("保存到BS时出错!!!");
+			setAckAccessSize(ackCsv.ack , 0);
+			e.printStackTrace();
+		}
+		bsLog.setFilName(StringUtil.replaceAll(bsLog.getFilName(), "\\", "/"));
+		hhtserverDao.addBsLog(bsLog);
+		
+		return ackCsv;
+	}
+
+	private File saveAck(List<LayerBean> ack , String ackFileName, StoreInfo storeInfo) throws IOException 
+	{
+		log.info("开始保存ack文件...");
+		DataBean dataBean = new DataBean();
+		dataBean.setLayerList(ack);
+		String csv = dataBean.toCsv("\t", "\n");
+		File folder = FileManager.getCsvFileDirectoryForMqToBs(storeInfo.getStoreNo());
+		ackFileName = StringUtil.replaceAll(ackFileName, ".", "_ACK.");
+		File file = new File(folder , ackFileName);
+		log.info("ack文件名称:" + file.getPath());
+		file.createNewFile();
+		FileOutputStream fos = new FileOutputStream(file);
+		fos.write(csv.getBytes());
+		fos.close();
+		return file;
+	}
+
+	private void setAckAccessSize(List<LayerBean> ack, int i) 
+	{
+		for (LayerBean layerBean : ack)
+		{
+			layerBean.getDataList().clear();
+			layerBean.setSize(i);
+			layerBean.setDataSize(i);
+		}
+	}
+
+	private void executionForBs(final StoreInfo storeInfo, final List<LayerBean> layerList, final Chginfo chginfo, final BsLog bsLog) 
+	{
+		long tempTime = System.currentTimeMillis();
+		//对此操作进行事务管理,即一个csv文件，一个事务
+		transactionTemplate.execute(new TransactionCallback() 
+		{
+			@Override
+			public Object doInTransaction(TransactionStatus arg0) 
+			{
+				
+				//创建接口头档对象
+				LayerBean layerBeanForCreChginst = null;
+				for (LayerBean layerBean : layerList) 
+				{
+					if(layerBean.getDataList().size() > 0)
+						layerBeanForCreChginst = layerBean;
+				}
+				Chginst chginst = initChgint(layerBeanForCreChginst , chginfo , storeInfo.getDbSchema() , bsLog); 
+				chginst.setFilcntInt(chginfo.getChgtblList().size());
+				
+				Map<String , Object> notExecutionKey = new HashMap<String, Object>();
+				
+				//循环遍历每层，一层相当于一个业务表
+				for (LayerBean layerBean : layerList) 
+				{
+					log.info("保存的层号：" + layerBean.getLayCode() + "数据量是：" + layerBean.getDataList().size());
+					//根据层获取对应的配置
+					ChgTbl chgtbl = getChgtblForLayerCode(layerBean.getLayCode() , chginfo);
+					//构建接口体档对象
+					ChginstF chginstf = initChginstF(chginst.getInstno() , layerBean.getDataList().size() , chgtbl , storeInfo.getDbSchema());
+					//根据TAROPTYP的值构建执行器
+					Executor executor = Executor.getExcutor(chginfo.getTaroptyp());
+					
+					List<String[]> dataList = layerBean.getDataList();
+					
+					if("WMS_PO2HHT".equals(chgtbl.getChgcode().toUpperCase().trim()) && 
+							"jdaid1df".equals(chgtbl.getTarTableName().toLowerCase().trim()))
+					{
+						for (String [] data : dataList) 
+						{
+							if(specialJudge(notExecutionKey , chgtbl , data) == true)
+							{
+								StringBuffer sql = new StringBuffer();
+								executor.createDel(data, chgtbl, storeInfo.getDbSchema(), sql);
+								storeDao.execution(sql.toString(), null);
+								executor = Executor.getExcutor(Executor.TAR_OP_TYP_INSERT);								
+							}
+						}
+					}
+					
+					//利用Map特性过滤掉主键重复的数据
+					//LinkedHashMap<String, String []> dataMap = colationData(dataList , chgtbl);	//key:主键cols ， value：一行数据
+					log.info(chginstf.getInstno() + "将要执行的行数:" + dataList.size());
+					for (String [] data : dataList) 
+					{
+						//数据存入BS中，现在的做法是：1、首先判断是否需要执行操作，根据配置档中TAROPCOND.2、如果判断成功则执行
+						addData(data , chgtbl , executor , storeInfo.getDbSchema() , chginstf , chginst , notExecutionKey);
+					}
+					//一个层执行完后，保存接口表头档
+					saveChginstf(chginstf , storeInfo.getDbSchema());
+					//累计增加来源数量
+					chginst.setSrccntInt(chginst.getSrccntInt() + dataList.size());
+				}
+				saveChginst(chginst , storeInfo.getDbSchema());
+				return null;
+				
+			}
+		});
+		
+		log.info("保存用时:" + (System.currentTimeMillis() - tempTime));
+	}
+	class AckCsv
+	{
+		public String ackFileName;
+		public List<LayerBean> ack = null;
+	}
+	/**
+	 * 特殊情况判断，针对于WMS_PO2HHT和HHT_D1D2HT，其他chgcode直接通过，返回true
+	 * @author 王成(chengwangi@isoftstone.com)
+	 * @date 2013-3-19 下午1:51:36
+	 * @param notExecutionKey
+	 * @param chgtbl
+	 * @param data
+	 * @return		true：表示通过判断,可执行。false：表示未通过判断，不建议执行
+	 */
+	private boolean specialJudge(Map<String , Object> notExecutionKey, ChgTbl chgtbl, String[] data)
+	{
+		if("WMS_PO2HHT".equals(chgtbl.getChgcode().toUpperCase().trim()) && 
+				"jdaid1df".equals(chgtbl.getTarTableName().toLowerCase().trim()))
+		{
+			return !notExecutionKey.containsKey(data[5]);
+		} else if("HHT_D1D2HT".equals(chgtbl.getChgcode().toUpperCase().trim()) && 
+				"jdaid2df".equals(chgtbl.getTarTableName().toLowerCase().trim()))
+		{
+			return !notExecutionKey.containsKey(data[0]);
+		}
+		return true;
+	}
+	
+	private Chginfo getConfig(StoreInfo storeInfo, List<LayerBean> layerList)
+			throws BscfgException 
+	{
+		String msgcode = layerList.get(0).getMsgCode();
+		msgcode = CommonUtil.getMsgcodePrefix(msgcode, storeInfo.getStoreNo());
+		
+		//暂时未用缓存
+		Chginfo chginfo = loadTarConfig(msgcode);
+		return chginfo;
+	}
+//	private	LinkedHashMap<String, String []> colationData(List<String []> dataList, ChgTbl chgtbl)
+//	{
+//		LinkedHashMap<String, String []> dataMap = new LinkedHashMap<String, String []>();
+//		
+//		for (String[] datas : dataList) 
+//		{
+//			StringBuffer pkSql = new StringBuffer(); 
+//			String [] pkCols = chgtbl.getPkColStr().split(",");
+//			for (int i = 0; i < pkCols.length; i++) 
+//			{
+//				if(i > 0)
+//					pkSql.append(" and ");
+//				int pkIndex = chgtbl.getPkColNo().get(i) - 1;
+//				pkSql.append(pkCols[i]).append("='").append(datas[pkIndex].trim()).append("'");
+//			}
+//			dataMap.put(pkSql.toString(), datas);
+//		}
+//		return dataMap;
+//	}
+	
+
+	private void saveMonitorTime(String schema) 
+	{
+		storeDao.insertMonitorTime(schema, "mqtobs_monitor");
+	}
+
+	private void saveChginst(Chginst chginst , String schema) 
+	{
+		if(storeDao.getChginstCountForInstno(chginst.getInstno(), schema) <= 0)
+		{
+			storeDao.insertChginst(schema, chginst);
+		} else
+		{
+			storeDao.updateChginst(schema, chginst);
+		}
+	}
+
+	private void saveChginstf(ChginstF chginstf , String schema) 
+	{
+		if(storeDao.getChginstfCountForInstnoAndTartablename(chginstf.getInstno(), chginstf.getTarnam(), schema) <= 0)
+		{
+			storeDao.insertChginstF(schema, chginstf);
+		} else
+		{
+			storeDao.updateChginstF(schema, chginstf);
+		}
+	}
+	
+	
+	private void addData(String[] data, ChgTbl chgtbl, Executor executor , String schema, ChginstF chginstf , Chginst chginst, Map<String , Object> notExecutionKey) 
+	{
+		boolean confirmation = confirmationExecutionBs(data , chgtbl , schema , notExecutionKey);
+		if(confirmation == true && this.specialJudge(notExecutionKey, chgtbl, data) == true)
+		{
+			final List<String> sqls = executor.sqlCreate(data, chgtbl , schema , chginstf.getInstno());
+			for (String sql : sqls) 
+			{
+				storeDao.execution(sql , null);
+			}
+			chginstf.setTarCntInt(chginstf.getTarCntInt() + 1);
+			chginst.setChgcntInt(chginst.getChgcntInt() + 1);
+		}
+	}
+	
+	private Chginst initChgint(LayerBean layerBean, Chginfo chginfo , String schema, BsLog bsLog)
+	{
+		
+		//获取oid
+		ChgTbl chgtbl = getChgtblForLayerCode(layerBean.getLayCode(), chginfo);
+		String oid = layerBean.getDataList().get(0)[chgtbl.getInstnoColNo() - 1];
+		bsLog.setInstno(oid);
+		Chginst chginst = this.storeDao.getChginstForOidSrcusrTrgsvr(oid, "JDA", "BS", schema);
+		
+		if(chginst != null)
+			return chginst;
+		
+		chginst = new Chginst();
+		chginst.setInstno(Uuid16.create().toString());
+		String dat = TimeUtil.formatDate(new Date(), TimeUtil.DATE_FORMAT_yyyyMMdd);
+		chginst.setChgdat(dat);
+		chginst.setChgsts("0");
+		chginst.setChgtyp("I");
+		chginst.setChgusr("MW");//暂时，以后改成可配置
+		chginst.setSrcdat(dat);
+		chginst.setSrcsts("1");
+		chginst.setSrcusr("JDA");
+		String tim = TimeUtil.formatDate(new Date(), TimeUtil.DATE_FORMAT_hhmmss);
+		chginst.setSrctim(tim);
+		chginst.setTrgsvr("BS");
+		chginst.setSyscod("MW");
+		chginst.setChgcod(chginfo.getChgcode());
+		
+		chginst.setOid(oid);
+		return chginst;
+	}
+
+	private ChgTbl getChgtblForLayerCode(String layCode, Chginfo chginfo) 
+	{
+		List<ChgTbl> chgtblList = chginfo.getChgtblList();
+		
+		for (ChgTbl chgTbl : chgtblList)
+		{
+			if(CommonUtil.laycodeToLayno(layCode).equals(chgTbl.getLayNo()))
+				return chgTbl;
+		}
+		return null;
+	}
+
+	private boolean confirmationExecutionBs(String[] data, ChgTbl chgtbl , String schema, Map<String , Object> notExecutionKey) 
+	{
+		if(StringUtil.isEmpty(chgtbl.getTarOpcond()))
+			return true;
+		int count = storeDao.getCountForPkAndOpcond(data , chgtbl , schema);
+		if(count > 0)
+		{
+			if("WMS_PO2HHT".equals(chgtbl.getChgcode().toUpperCase().trim()) && 
+					"jdaid1hf".equals(chgtbl.getTarTableName().toLowerCase().trim()))
+			{
+				notExecutionKey.put(data[7] , null);
+			} else if("HHT_D1D2HT".equals(chgtbl.getChgcode().toUpperCase().trim()) && 
+					"jdaid2hf".equals(chgtbl.getTarTableName().toLowerCase().trim()))
+			{
+				notExecutionKey.put(data[0] , null);
+			}
+			
+			log.info("一条数据未符合执行条件，不执行后续操作!!!");
+			return false;
+		}
+		return true;
+	}
+
+	private List<LayerBean> getLayerBean(String path) throws GenerationCsvModelException
+	{
+		File file = null;
+		Reader r = null;
+		BufferedReader br  = null;
+		try {
+			file = new File(path);
+			r = new FileReader(file);
+			br = new BufferedReader(r);
+			DataBean dataBean = new DataBean(br, "\t", "\n");
+			
+			return dataBean.getLayerList();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			throw new GenerationCsvModelException("csv文件未找到!!!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new GenerationCsvModelException("文件已获取，在转换对象时出错!!!");
+		} finally {
+			try {
+				br.close();
+				r.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+
+	public Chginfo loadTarConfig(String msgcode) throws BscfgException 
+	{
+		Chginfo chginfo = hhtserverDao.getChginfoForMsgcode(msgcode);
+		List<ChgTbl> chgtblList = hhtserverDao.getTblForChgcode(chginfo.getChgcode());
+		for (ChgTbl chgtbl : chgtblList) 
+		{
+			hhtserverDao.getTblDtlForTar(chgtbl);
+		}
+		chginfo.setChgtblList(chgtblList);
+		return chginfo;
+	}
+	private ChginstF initChginstF(String instno, int srcDataSize, ChgTbl chgtbl , String schema) 
+	{
+		ChginstF cf = storeDao.getChginstfForInstnoSrcnamTarnam(instno , chgtbl.getSrcTableName() , chgtbl.getTarTableName() , schema);
+		if(cf == null)
+			cf = new ChginstF();
+		
+		cf.setInstno(instno);
+		cf.setOthsum("0");
+		cf.setTaroth("0");
+		cf.setSrcCntInt(cf.getSrcCntInt() + srcDataSize);
+		cf.setSrclib("");
+		cf.setTarlib(schema);
+		cf.setSrcnam(chgtbl.getSrcTableName());
+		cf.setTarnam(chgtbl.getTarTableName());
+		return cf;
+	}
+
+	public StoreDao getStoreDao() {
+		return storeDao;
+	}
+	public void setStoreDao(StoreDao storeDao) {
+		this.storeDao = storeDao;
+	}
+	public HhtserverDao getHhtserverDao() {
+		return hhtserverDao;
+	}
+	public void setHhtserverDao(HhtserverDao hhtserverDao) {
+		this.hhtserverDao = hhtserverDao;
+	}
+
+	public PlatformTransactionManager getTransactionManager() {
+		return transactionManager;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) 
+	{
+		this.transactionManager = transactionManager;
+		this.transactionTemplate = new TransactionTemplate(transactionManager);
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+}

@@ -1,0 +1,41 @@
+TabForCsv=/t
+folder_name_for_from_mq_to_bs=csvFromMqToBs
+folder_name_for_from_bs_to_mq=csvFromSomToMq
+folder_name_for_root=MW\\file
+#\u4fdd\u5b58csv\u6587\u4ef6\u7684\u76d8\u7b26
+csv_file_directory=E:\\
+
+thread_queue_size=1000
+corePoolSize=30
+maxPoolSize=30
+keepAlvieTime=700
+
+#MQ\u83b7\u53d6\u6587\u4ef6\u65f6,\u5f00\u542f\u7684\u6700\u5927\u7ebf\u7a0b\u6570
+maxPoolSizeForReceivFileMq=10
+
+
+mail.smtp = rs2.testritegroup.com
+mail.port = 25
+
+mail.from = hola@hola.com.cn
+#mail.to = alex.zhang@testritegroup.com
+#mail.cc = mark.zhang@testritegroup.com
+
+#mail.to = holab2b@bnslink.com,amy.gong@bnslink.com
+mail.to = sky.pan@testritegroup.com,Benjamin.Xu@testritegroup.com
+#,sky.pan@testritegroup.com,Justin.Liu@testritegroup.com
+#mail.cc = mark.zhang@testritegroup.com,
+mail.cc = sky.pan@testritegroup.com,Benjamin.Xu@testritegroup.com
+
+
+mail.subject = \u95e8\u5e97BS\u7cfb\u7edf\u90ae\u4ef6
+
+#tomail
+threetransfertomail=true
+
+#tomail
+sendManufStop=true
+
+
+startDateTime=20130319164900
+intervalMinute=1

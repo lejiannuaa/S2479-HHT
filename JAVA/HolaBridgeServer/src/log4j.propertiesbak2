@@ -1,0 +1,58 @@
+log4j.rootLogger=DEBUG,MINA,file
+#业务日志统一输出到数据库里面�?
+log4j.logger.com.hola.bs.service.hht=JDBC
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=[%-5p][%d{yyyy-MM-dd HH:mm:ss}][%l]:%m%n
+
+log4j.logger.info=info
+log4j.appender.info=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.info.layout=org.apache.log4j.PatternLayout
+log4j.appender.info.layout.ConversionPattern=[%-5p][%d{yyyy-MM-dd HH:mm:ss}][%l]:%m%n
+log4j.appender.info.datePattern='.'yyyy-MM-dd
+log4j.appender.info.Threshold = info 
+log4j.appender.info.append=true
+#log4j.appender.info.File=${webApp.root}/WEB-INF/logs/info.log
+log4j.appender.info.File=d:/log/HolaBridgeServer/info/HolaBridgeServer_info.log
+
+log4j.appender.JDBC=org.apache.log4j.jdbc.JDBCAppender
+log4j.appender.JDBC.Threshold=info 
+log4j.appender.JDBC.URL=jdbc\:mysql\://10.130.1.43\:3309/hhtserver?useUnicode\=true&amp;characterEncoding\=utf-8
+log4j.appender.JDBC.driver=com.mysql.jdbc.Driver
+log4j.appender.JDBC.user=root
+log4j.appender.JDBC.password=root 
+log4j.appender.JDBC.sql=INSERT INTO hhtserver.hhtlog (user_no,sto_no,operation_desc, logdate) VALUES ('%X{userNo}','%X{stoNo}','%m', '%d{yyyy-MM-dd hh:mm:ss}')
+log4j.appender.JDBC.filter.F1.levelMin=INFO
+log4j.appender.JDBC.filter.F1.levelMax=INFO     
+log4j.appender.JDBC.BufferedIO=true
+log4j.appender.JDBC.BufferSize=1024
+
+ 
+#log4j.logger.debug=debug
+#log4j.appender.debug=org.apache.log4j.DailyRollingFileAppender
+#log4j.appender.debug.layout=org.apache.log4j.PatternLayout
+#log4j.appender.debug.layout.ConversionPattern=[%-5p] [%d{HH:mm:ss}] %c - %m%n
+#log4j.appender.debug.datePattern='.'yyyy-MM-dd
+#log4j.appender.debug.Threshold = DEBUG 
+#log4j.appender.debug.append=true
+#log4j.appender.debug.File=${webApp.root}/WEB-INF/logs/debug.log
+#log4j.appender.debug.File=d:/log/Contract/Contract_debug.log
+
+log4j.logger.error=error
+log4j.appender.error=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.error.layout=org.apache.log4j.PatternLayout
+log4j.appender.error.layout.ConversionPattern=[%-5p][%d{yyyy-MM-dd HH:mm:ss}][%l]:%m%n
+log4j.appender.error.datePattern='.'yyyy-MM-dd
+log4j.appender.error.Threshold = ERROR 
+log4j.appender.error.append=true
+#log4j.appender.error.File=${webApp.root}/WEB-INF/logs/error.log 
+log4j.appender.error.File=d\:/log/HolaBridgeServer/error/error.log 
+log4j.appender.MINA=org.apache.log4j.ConsoleAppender
+log4j.appender.MINA.layout=org.apache.log4j.PatternLayout
+log4j.appender.MINA.layout.ConversionPattern=%d{yyyy-MM-dd HH\:mm\:ss,SSS} %-5p %c{1}{1}{1}{1} %x - %m%n
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+log4j.appender.file.File=./log/minademos.log
+log4j.appender.file.MaxFileSize=5120KB log4j.appender.file.MaxBackupIndex=10
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=[VAMS][%d]%p|%m|[%t]%C.%M(%L)%n

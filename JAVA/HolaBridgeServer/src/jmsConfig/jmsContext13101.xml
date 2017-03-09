@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<!-- Application Context -->
+<beans>
+<!-- 
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="locations">
+        <list>
+          <value>classpath:jms.properties</value>
+        </list>
+      </property>
+  	</bean>
+  	 -->
+	<bean id="connectionFactory13101" class="com.ibm.mq.jms.MQQueueConnectionFactory">
+		<property name="transportType">
+			<value>${transportType}</value>
+	  	</property>
+		<property name="hostName">
+			<value>${hostName}</value>
+	  	</property>
+	  	<property name="CCSID">
+			<value>${CCSID}</value>
+	  	</property>
+		<property name="queueManager">
+			<value>QM_S13101</value>
+	  	</property>
+		<property name="port">
+			<value>1443</value>
+	  	</property>
+	</bean>
+
+	<bean id="jmsQueueConnectionFactory13101"
+        class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter">
+        <property name="targetConnectionFactory">
+            <ref bean="connectionFactory13101"/>
+        </property>
+        <property name="username">
+        	<value>${username}</value>
+        </property>
+   		<property name="password">
+   			<value>${password}</value>
+   		</property>
+    </bean>
+
+    <bean id="messageConverter13101"
+        class="org.springframework.jms.support.converter.SimpleMessageConverter"/>
+ 
+    <!-- JMS Queue Template -->
+    <bean id="jmsQueueTemplate13101" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="jmsQueueConnectionFactory13101"/>
+        </property>
+        <property name="messageConverter">
+            <ref bean="messageConverter13101"/>
+        </property>
+        <property name="pubSubDomain">
+            <value>false</value>
+        </property>
+        <property name="receiveTimeout">
+            <value>${receiveTimeout}</value>
+        </property>
+        <property name="sessionTransacted">
+            <value>true</value>
+        </property>
+        <property name="sessionAcknowledgeMode">
+            <value>0</value>
+        </property>
+    </bean>
+
+    <bean id="jmsSender13101"
+    	class="com.hola.datahub.core.mq.JMSSender">
+    	<property name="jmsTemplate">
+    		<ref bean="jmsQueueTemplate13101" />
+    	</property>
+    	<property name="queueManagerName">
+    		<value>QM_S13101</value>
+    	</property>
+    </bean>
+
+    <bean id="jmsReceiver13101"
+    	class="com.hola.datahub.core.mq.JMSReceiver">
+    	<property name="jmsTemplate">
+    		<ref bean="jmsQueueTemplate13101" />
+    	</property>
+    </bean>
+
+    <bean id="jmsTransactionManager13101"
+    	class="org.springframework.jms.connection.JmsTransactionManager">
+    	<property name="connectionFactory"
+    		ref="jmsQueueConnectionFactory13101" />
+    </bean>
+
+    <bean id="jmsInRouterTransactionInterceptor13101"
+    	class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    	<property name="transactionManager" ref="jmsTransactionManager13101" />
+    	<property name="transactionAttributeSource">
+    		<value>
+    			com.hola.datahub.core.mq.JMSReceiver.processMessage=PROPAGATION_REQUIRED, -java.lang.Exception
+    		</value>
+    	</property>
+    </bean>
+
+    <bean id="inboundRouterAgent13101"
+    	class="org.springframework.aop.framework.ProxyFactoryBean">
+    	<property name="proxyTargetClass">
+    		<value>true</value>
+    	</property>
+    	<property name="interceptorNames">
+    		<list>
+    			<value>jmsInRouterTransactionInterceptor13101</value>
+    			<value>jmsReceiver13101</value>
+    		</list>
+    	</property>
+    </bean>
+    
+    <bean id="outboundRouterAgent13101"
+    	class="org.springframework.aop.framework.ProxyFactoryBean">
+    	<property name="proxyTargetClass">
+    		<value>true</value>
+    	</property>
+    	<property name="interceptorNames">
+    		<list>
+    			<value>jmsSender13101</value>
+    		</list>
+    	</property>
+    </bean>
+
+</beans>

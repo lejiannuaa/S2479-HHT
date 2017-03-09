@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<!-- 计划任务启动参数 -->
+	<StartParam>
+		<!-- 启动时间 -->
+		<StartTime>2011-10-27 16:40:00</StartTime>
+		<!-- 轮询周期(单位:分钟) -->
+		<PollingCycle>20</PollingCycle>
+	</StartParam>
+	<!-- 数据库信息 -->
+	<Connect>
+		<!-- 
+			jdbc:oracle:thin:@10.130.1.9:1521:holaweb
+			jdbc:oracle:thin:@10.130.1.23:1521:orcl
+		 -->
+		<Url>jdbc:oracle:thin:@10.130.1.11:1521:holaweb</Url>
+		<Driver>oracle.jdbc.OracleDriver</Driver>
+		<UserName>msg</UserName>
+		<Pwd>holamsg</Pwd>
+	</Connect>
+</config>

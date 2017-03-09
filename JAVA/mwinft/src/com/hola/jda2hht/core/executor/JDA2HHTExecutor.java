@@ -1,0 +1,240 @@
+package com.hola.jda2hht.core.executor;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import org.apache.log4j.Logger;
+
+import com.hola.jda2hht.core.pipe.IPipe;
+import com.hola.jda2hht.model.ChangeInfoBean;
+import com.hola.jda2hht.model.ChangeSysBean;
+import com.hola.jda2hht.model.JDAChangeInstBean;
+import com.hola.jda2hht.service.IChgInfoService;
+import com.hola.jda2hht.service.IChgSysService;
+import com.hola.jda2hht.service.IJDAChgInstService;
+import com.hola.jda2hht.service.impl.JDAInstServiceImpl;
+import com.hola.jda2hht.util.ConfigUtil;
+import com.hola.jda2hht.util.MailUtils;
+import com.hola.jda2hht.util.ThreadPoolUtil;
+
+/**
+ * 执行器，程序真正的执行对象
+ * 
+ * @author 唐植超(上海软通)
+ * @date 2012-12-26
+ * @remark
+ */
+public class JDA2HHTExecutor {
+
+	private static final Logger log = Logger.getLogger(JDA2HHTExecutor.class);
+	// 从spring中获得业务类 主要是不想把这个执行器配置到spring中
+	private IChgSysService chgSysService;
+	private IChgInfoService chgInfoService;
+
+	public IChgSysService getChgSysService() {
+		return chgSysService;
+	}
+
+	public void setChgSysService(IChgSysService chgSysService) {
+		this.chgSysService = chgSysService;
+	}
+
+	public IChgInfoService getChgInfoService() {
+		return chgInfoService;
+	}
+
+	public void setChgInfoService(IChgInfoService chgInfoService) {
+		this.chgInfoService = chgInfoService;
+	}
+
+	/**
+	 * 执行的具体实现
+	 * 
+	 * @remark
+	 * @file: JDA2HHTExecutor.java
+	 * @author 唐植超(上海软通)
+	 * @date 2012-12-26
+	 * @throws Exception
+	 */
+	public void executor() throws Exception {
+		log.debug("开始执行");
+		List<ChangeSysBean> list = chgSysService.findAllSys();
+		if (list == null || list.size() == 0) {
+			log.info("系统表没有数据");
+			return;
+		}
+		for (ChangeSysBean sysBean : list) {
+			log.info("系统名：" + sysBean.getSysname());
+			doChange(sysBean, list.indexOf(sysBean) == list.size() - 1);
+		}
+		// 退出线程
+		ThreadPoolUtil.shutdown();
+	}
+
+	private void doChange(ChangeSysBean sysBean, boolean endSys)
+			throws Exception {
+		// 获得交换资料信息档
+		List<ChangeInfoBean> infoList = chgInfoService.getChageBySys(sysBean);
+		if (infoList == null || infoList.size() == 0) {
+			log.info("根据系统表没有查到信息");
+			return;
+		}
+		
+		
+		String[] chgcodeList = ConfigUtil.getConfig("chgcode").split(",");
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		for(String chgcode : chgcodeList){
+			map.put(chgcode, chgcode);
+		}
+		
+		
+		// 这个对象必须根据系统对象动态实例化哦，他的数据源是从数据库读出来的
+		IJDAChgInstService chgInstService = new JDAInstServiceImpl(sysBean);
+		for (ChangeInfoBean infoBean : infoList) {
+			try {
+				log.info("查询所有状态为1的数据，交换代码为：" + infoBean.getChgcode());
+				
+				
+				if(map.containsKey(infoBean.getChgcode())){
+				
+				
+				
+				// 到jda上面根据交换代码和状态查询出所有的记录
+				List<JDAChangeInstBean> instList = chgInstService.getInstList(infoBean.getChgcode(), "1");
+				if (instList == null || instList.size() == 0) {
+					log.info("没有查到数据");
+					continue;
+				}
+				log.info("将状态更新为0，表示这些数据正在抛转中");
+				// 同时更新状态为正在执行
+				chgInstService.updateStatus(instList, "0");
+				changeInst(instList, sysBean, infoBean, chgInstService);
+				
+				}
+				
+			} catch (Exception e) {
+				log.error("执行信息档交换代码：" + infoBean.getChgcode() + " 执行失败" , e);
+			}
+		}
+	}
+
+	/**
+	 * 开始交换的调度
+	 * 
+	 * @file: JDA2HHTExecutor.java
+	 * @author 唐植超(上海软通)
+	 * @date 2013-1-5
+	 * @param instList
+	 * @param sysBean
+	 * @param infoBean
+	 * @param chgInstService
+	 * @param endSys
+	 * @param endInfo
+	 * @throws Exception
+	 */
+	public void changeInst(List<JDAChangeInstBean> instList,
+			final ChangeSysBean sysBean, final ChangeInfoBean infoBean,
+			final IJDAChgInstService chgInstService) throws Exception {
+		// 每个infoBean 的管道可能不同，所以需要放在这里获取
+		final IPipe pipe = ConfigUtil.getPipe(infoBean.getChgtype());
+		for (final JDAChangeInstBean inst : instList) {
+			Callable<String> r = new Callable<String>() {
+
+				@Override
+				public String call() {
+					try {
+						// 一个批次号进行一次抛转，每个批次使用一个线程
+						pipe.tran(sysBean, infoBean, inst);
+						// 抛砖成功，更新状态
+						chgInstService.updateStatus(inst, "2");
+						log.info("成功抛转一个批次：" + inst.getInstno()
+								+ " 将状态更新为2，表示抛转成功");
+					} catch (Exception e) {
+						log.error(
+								"抛转失败,批次号：" + inst.getInstno() + " "
+										+ e.getMessage(), e);
+
+						if("CRM_POS".equals(inst.getChgcod())||"EC_C1F".equals(inst.getChgcod()))
+						{
+							try {
+								chgInstService.updateStatus(inst, "1");
+								log.info("状态回滚：" + inst.getInstno()
+										+ " 将状态更新为1，表示需重新抛转");
+							}catch (Exception err)
+							{
+								log.error(
+										"抛砖&恢复失败,批次号：" + inst.getInstno() + " "
+												+ err.getMessage(), err);
+								// 创建邮件信息
+								/*
+								String content = createMail(sysBean, infoBean, inst, err);
+								Map<String, String> mailMap = new HashMap<String, String>();
+								mailMap.put("content", content);
+								// 发送邮件
+								MailUtils.sendMail(mailMap);
+								*/
+
+							}
+						}
+						else
+						{
+							// 创建邮件信息
+							String content = createMail(sysBean, infoBean, inst, e);
+							Map<String, String> mailMap = new HashMap<String, String>();
+							mailMap.put("content", content);
+							// 发送邮件
+							MailUtils.sendMail(mailMap);
+						}
+						
+					}
+					
+					return inst.getInstno();
+				}
+			};
+			// 放入线程池
+			ThreadPoolUtil.runJob(r);
+		}
+	}
+
+	/**
+	 * 创建邮件的信息
+	 * 
+	 * @file: JDA2HHTExecutor.java
+	 * @author 唐植超(上海软通)
+	 * @date 2013-1-15
+	 * @param sysBean
+	 * @param infoBean
+	 * @param inst
+	 * @param ex
+	 * @return
+	 */
+	protected String createMail(ChangeSysBean sysBean, ChangeInfoBean infoBean,
+			JDAChangeInstBean inst, Exception ex) {
+		// 发送邮件通知，信息包括
+		// 1.说明，如JDAtoHHT
+		// 2.CHGCODE
+		// 3.INSTNO
+		// 4.时间
+		// 5.异常信息
+		//
+		StringBuffer sb = new StringBuffer();
+		sb.append("<table border='1'>");
+		sb.append("<tr>");
+		sb.append("<td>说明</td>");
+		sb.append("<td>CHGCODE</td>");
+		sb.append("<td>INSTNO</td>");
+		sb.append("<td>异常信息</td>");
+		sb.append("</tr>");
+		sb.append("<tr>");
+		sb.append("<td>From " + infoBean.getSrccode() + "</td>");
+		sb.append("<td>" + infoBean.getChgcode() + "</td>");
+		sb.append("<td>" + inst.getInstno() + "</td>");
+		sb.append("<td>" + ex.getMessage() + "</td>");
+		sb.append("</tr>");
+		sb.append("</table>");
+		return sb.toString();
+	}
+}
