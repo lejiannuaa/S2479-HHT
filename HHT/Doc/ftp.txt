@@ -1,0 +1,5 @@
+FTP的测试环境如下：
+
+FTP Test Server地址：172.16.251.121
+用户名：crmftp
+密码：asdf1234

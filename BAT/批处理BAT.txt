@@ -1,0 +1,40 @@
+@echo off
+echo,
+echo 自动更新门店BridgeServer......
+echo,
+echo 自动更新门店BridgeServer......
+echo,
+
+set logfilename=log自动更新_%date:~0,4%_%date:~5,2%_%date:~8,2%
+
+echo %date:~0,4%年%date:~5,2%月%date:~8,2%日%time:~0,8%:
+echo %date:~0,4%年%date:~5,2%月%date:~8,2%日%time:~0,8%:>>D:\%logfilename%.txt
+echo 开始更新门店BridgeServer......
+echo 开始更新门店BridgeServer......>>D:\%logfilename%.txt
+echo,
+echo %date:~0,4%年%date:~5,2%月%date:~8,2%日%time:~0,8%:
+echo %date:~0,4%年%date:~5,2%月%date:~8,2%日%time:~0,8%:>>D:\%logfilename%.txt
+echo 开始门店11101^&11108更新，请稍后......
+echo 开始门店11101^&11108，请稍后......>>D:\%logfilename%.txt
+robocopy D:\A \\10.130.1.14\公用-temporary\Lejian\A /R:3 /W:3 /E /TEE /LOG+:D:\%logfilename%.txt
+
+pause
+
+for循环
+@echo off 
+setlocal enabledelayedexpansion
+for /l %%i in (1,1,9) do (
+set f1=%%i
+echo !f1!
+)
+pause
+
+
+
+    EQU - 等于
+    NEQ - 不等于
+    LSS - 小于
+    LEQ - 小于或等于
+    GTR - 大于
+    GEQ - 大于或等于
+

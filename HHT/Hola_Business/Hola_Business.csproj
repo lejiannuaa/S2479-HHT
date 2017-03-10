@@ -1,0 +1,436 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ED37C124-4642-4D0B-B37A-E6CEA866157B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hola_Business</RootNamespace>
+    <AssemblyName>Hola_Business</AssemblyName>
+    <ProjectTypeGuids>{4D628B5B-2FBC-4AA6-8C16-197242AEB884};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PlatformFamilyName>PocketPC</PlatformFamilyName>
+    <PlatformID>4118C335-430C-497f-BE48-11C3316B135E</PlatformID>
+    <OSVersion>5.1</OSVersion>
+    <DeployDirSuffix>HHTIII</DeployDirSuffix>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <NativePlatformName>Windows Mobile 5.0 Pocket PC SDK</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataGrid" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormDJ.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDJ.Designer.cs">
+      <DependentUpon>FormDJ.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDJInc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDJInc.Designer.cs">
+      <DependentUpon>FormDJInc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDJInq.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDJInq.Designer.cs">
+      <DependentUpon>FormDJInq.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDJSKU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDJSKU.Designer.cs">
+      <DependentUpon>FormDJSKU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormhhtDDOrderCX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormhhtDDOrderCX.Designer.cs">
+      <DependentUpon>FormhhtDDOrderCX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormhhtDDOrderDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormhhtDDOrderDetail.Designer.cs">
+      <DependentUpon>FormhhtDDOrderDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormhhtDDOrderInc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormhhtDDOrderInc.Designer.cs">
+      <DependentUpon>FormhhtDDOrderInc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormhhtDDOrderQD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormhhtDDOrderQD.Designer.cs">
+      <DependentUpon>FormhhtDDOrderQD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHHTOrderCX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHHTOrderCX.Designer.cs">
+      <DependentUpon>FormHHTOrderCX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHHTOrderDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHHTOrderDetail.Designer.cs">
+      <DependentUpon>FormHHTOrderDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHHTOrderInc..cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHHTOrderInc..Designer.cs">
+      <DependentUpon>FormHHTOrderInc..cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHHTOrderQD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHHTOrderQD.Designer.cs">
+      <DependentUpon>FormHHTOrderQD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInv.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInv.Designer.cs">
+      <DependentUpon>FormInv.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInvDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInvDB.Designer.cs">
+      <DependentUpon>FormInvDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInventoryCX.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInventoryCX.Designer.cs">
+      <DependentUpon>FormInventoryCX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInventoryInc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInventoryInc.Designer.cs">
+      <DependentUpon>FormInventoryInc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInventoryInquiry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInventoryInquiry.Designer.cs">
+      <DependentUpon>FormInventoryInquiry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInventoryQD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInventoryQD.Designer.cs">
+      <DependentUpon>FormInventoryQD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInvPO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInvPO.Designer.cs">
+      <DependentUpon>FormInvPO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInvTD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInvTD.Designer.cs">
+      <DependentUpon>FormInvTD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBIn.Designer.cs">
+      <DependentUpon>FormJBIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBInDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBInDetail.Designer.cs">
+      <DependentUpon>FormJBInDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBInSKU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBInSKU.Designer.cs">
+      <DependentUpon>FormJBInSKU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBMain.Designer.cs">
+      <DependentUpon>FormJBMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBOrder.Designer.cs">
+      <DependentUpon>FormJBOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBOrderI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBOrderI.Designer.cs">
+      <DependentUpon>FormJBOrderI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBOrdetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBOrdetail.Designer.cs">
+      <DependentUpon>FormJBOrdetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBScan.Designer.cs">
+      <DependentUpon>FormJBScan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBScanI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBScanI.Designer.cs">
+      <DependentUpon>FormJBScanI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPDetail.Designer.cs">
+      <DependentUpon>FormPDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPNO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPNO.Designer.cs">
+      <DependentUpon>FormPNO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormP.Designer.cs">
+      <DependentUpon>FormP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPSKU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPSKU.Designer.cs">
+      <DependentUpon>FormPSKU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormDJ.resx">
+      <DependentUpon>FormDJ.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDJInc.resx">
+      <DependentUpon>FormDJInc.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDJInq.resx">
+      <DependentUpon>FormDJInq.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDJSKU.resx">
+      <DependentUpon>FormDJSKU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormhhtDDOrderCX.resx">
+      <DependentUpon>FormhhtDDOrderCX.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormhhtDDOrderDetail.resx">
+      <DependentUpon>FormhhtDDOrderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormhhtDDOrderInc.resx">
+      <DependentUpon>FormhhtDDOrderInc.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormhhtDDOrderQD.resx">
+      <DependentUpon>FormhhtDDOrderQD.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHHTOrderCX.resx">
+      <DependentUpon>FormHHTOrderCX.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHHTOrderDetail.resx">
+      <DependentUpon>FormHHTOrderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHHTOrderInc..resx">
+      <DependentUpon>FormHHTOrderInc..cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHHTOrderQD.resx">
+      <DependentUpon>FormHHTOrderQD.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInv.resx">
+      <DependentUpon>FormInv.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInvDB.resx">
+      <DependentUpon>FormInvDB.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInventoryCX.resx">
+      <DependentUpon>FormInventoryCX.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInventoryInc.resx">
+      <DependentUpon>FormInventoryInc.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInventoryInquiry.resx">
+      <DependentUpon>FormInventoryInquiry.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInventoryQD.resx">
+      <DependentUpon>FormInventoryQD.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInvPO.resx">
+      <DependentUpon>FormInvPO.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInvTD.resx">
+      <DependentUpon>FormInvTD.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBIn.resx">
+      <DependentUpon>FormJBIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBInDetail.resx">
+      <DependentUpon>FormJBInDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBInSKU.resx">
+      <DependentUpon>FormJBInSKU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBMain.resx">
+      <DependentUpon>FormJBMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBOrder.resx">
+      <DependentUpon>FormJBOrder.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBOrderI.resx">
+      <DependentUpon>FormJBOrderI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBOrdetail.resx">
+      <DependentUpon>FormJBOrdetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBScan.resx">
+      <DependentUpon>FormJBScan.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBScanI.resx">
+      <DependentUpon>FormJBScanI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormP.resx">
+      <DependentUpon>FormP.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPDetail.resx">
+      <DependentUpon>FormPDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPNO.resx">
+      <DependentUpon>FormPNO.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPSKU.resx">
+      <DependentUpon>FormPSKU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HolaCore\HolaCore.csproj">
+      <Project>{257EA535-EBB4-44A3-81B7-F754B1D7208C}</Project>
+      <Name>HolaCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)\Hola_Business\bin\$(ConfigurationName)\Hola_Business.exe"  "$(SolutionDir)\Doc\Realese"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

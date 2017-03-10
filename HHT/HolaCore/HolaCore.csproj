@@ -1,0 +1,324 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{257EA535-EBB4-44A3-81B7-F754B1D7208C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HolaCore</RootNamespace>
+    <AssemblyName>HolaCore</AssemblyName>
+    <ProjectTypeGuids>{4D628B5B-2FBC-4AA6-8C16-197242AEB884};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PlatformFamilyName>PocketPC</PlatformFamilyName>
+    <PlatformID>4118C335-430C-497f-BE48-11C3316B135E</PlatformID>
+    <OSVersion>5.1</OSVersion>
+    <DeployDirSuffix>HHTIII</DeployDirSuffix>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <NativePlatformName>Windows Mobile 5.0 Pocket PC SDK</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+    <StartupObject>
+    </StartupObject>
+    <DeployDirPrefix>%25CSIDL_PROGRAM_FILES%25</DeployDirPrefix>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsCE.Forms" />
+    <Reference Include="Microsoft.WindowsMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.WindowsMobile.Forms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.WindowsMobile.Status, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataGrid" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CameraCaptureManager.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="ConnThread.cs" />
+    <Compile Include="DataGridCustomButtonColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridCustomCheckBoxColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridCustomColumnBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridCustomComboBoxColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridCustomDateTimePickerColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridCustomTextBoxColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridCustomUpDownColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridEvenOddHandler.cs" />
+    <Compile Include="FormApp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormApp.designer.cs">
+      <DependentUpon>FormApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCamera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCamera.Designer.cs">
+      <DependentUpon>FormCamera.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDownload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDownload.Designer.cs">
+      <DependentUpon>FormDownload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPing.Designer.cs">
+      <DependentUpon>FormPing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormScan.designer.cs">
+      <DependentUpon>FormScan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormScanAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormScanAdd.Designer.cs">
+      <DependentUpon>FormScanAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormUpdate.Designer.cs">
+      <DependentUpon>FormUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FullscreenClass.cs" />
+    <Compile Include="ImageButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="JSONClass.cs" />
+    <Compile Include="NonFullscreenForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormApp.resx">
+      <DependentUpon>FormApp.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCamera.resx">
+      <DependentUpon>FormCamera.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDownload.resx">
+      <DependentUpon>FormDownload.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPing.resx">
+      <DependentUpon>FormPing.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormScan.resx">
+      <DependentUpon>FormScan.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormScanAdd.resx">
+      <DependentUpon>FormScanAdd.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormUpdate.resx">
+      <DependentUpon>FormUpdate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SerializeClass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c7_original.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c7_originaled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c11_original.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c11_originaled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c19_original.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c19_originaled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c23_original.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c23_originaled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\check.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checked.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fcheck.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\u15_original.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\u15_originaled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\u19_original.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\u19_originaled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\excel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\excel_p.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\in.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\in_p.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\out_p.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\scan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\excel2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\excel2_p.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bg2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkeds.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ping.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ping_p.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FormBG.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\JBIn.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\JBOrder.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\JBScan.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\yyk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config.xml">
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)HolaCore\bin\$(ConfigurationName)\HolaCore.dll"  "$(SolutionDir)Doc\Realese"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

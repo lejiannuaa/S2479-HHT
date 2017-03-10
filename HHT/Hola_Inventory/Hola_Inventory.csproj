@@ -1,0 +1,216 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9E95C140-A0FE-418A-BF7B-AD35508D36DA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hola_Inventory</RootNamespace>
+    <AssemblyName>Hola_Inventory</AssemblyName>
+    <ProjectTypeGuids>{4D628B5B-2FBC-4AA6-8C16-197242AEB884};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PlatformFamilyName>PocketPC</PlatformFamilyName>
+    <PlatformID>4118C335-430C-497f-BE48-11C3316B135E</PlatformID>
+    <OSVersion>5.1</OSVersion>
+    <DeployDirSuffix>HHTIII</DeployDirSuffix>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <NativePlatformName>Windows Mobile 5.0 Pocket PC SDK</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataGrid" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormCP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCP.Designer.cs">
+      <DependentUpon>FormCP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCPI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCPI.Designer.cs">
+      <DependentUpon>FormCPI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCPISKU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCPISKU.Designer.cs">
+      <DependentUpon>FormCPISKU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCPSKU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCPSKU.Designer.cs">
+      <DependentUpon>FormCPSKU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFP.Designer.cs">
+      <DependentUpon>FormFP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFPSKU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFPSKU.Designer.cs">
+      <DependentUpon>FormFPSKU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFPSKUMod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFPSKUMod.Designer.cs">
+      <DependentUpon>FormFPSKUMod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormHHTScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHHTScan.Designer.cs">
+      <DependentUpon>FormHHTScan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBIn.designer.cs">
+      <DependentUpon>FormJBIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBInDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBInDetail.designer.cs">
+      <DependentUpon>FormJBInDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJBInSKU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJBInSKU.designer.cs">
+      <DependentUpon>FormJBInSKU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormCP.resx">
+      <DependentUpon>FormCP.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCPI.resx">
+      <DependentUpon>FormCPI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCPISKU.resx">
+      <DependentUpon>FormCPISKU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCPSKU.resx">
+      <DependentUpon>FormCPSKU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFP.resx">
+      <DependentUpon>FormFP.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFPSKU.resx">
+      <DependentUpon>FormFPSKU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFPSKUMod.resx">
+      <DependentUpon>FormFPSKUMod.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHHTScan.resx">
+      <DependentUpon>FormHHTScan.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBIn.resx">
+      <DependentUpon>FormJBIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBInDetail.resx">
+      <DependentUpon>FormJBInDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJBInSKU.resx">
+      <DependentUpon>FormJBInSKU.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HolaCore\HolaCore.csproj">
+      <Project>{257EA535-EBB4-44A3-81B7-F754B1D7208C}</Project>
+      <Name>HolaCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)Hola_Inventory\bin\$(ConfigurationName)\Hola_Inventory.exe"  "$(SolutionDir)Doc\Realese"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
